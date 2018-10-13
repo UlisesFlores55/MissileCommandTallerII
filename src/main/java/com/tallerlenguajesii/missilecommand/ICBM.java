@@ -30,21 +30,21 @@ public class ICBM extends Misil {
         calculateScreenIncrements(speed);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Created ICBM with intial coordinates: " + initialCoordinates +
-                    ", objetivo: " + objetivo.getCoordinates() +
+            logger.debug("Created ICBM with intial coordenadas: " + initialCoordinates +
+                    ", objetivo: " + objetivo.getCoordenadas() +
                     ", x increments: " + xIncrement);
         }
     }
 
     private void calculateScreenIncrements(int speed) {
         yIncrement = speed;
-        xIncrement = ((objetivo.getCoordinates().getX() - this.initialCoordinates.getX()) / 328) * speed;
+        xIncrement = ((objetivo.getCoordenadas().getX() - this.initialCoordinates.getX()) / 328) * speed;
     }
 
     /**
      * Move this ICBM one step closer to the bottom of the game area.
      */
-    public void animate() {
+    public void animar() {
         if (misilEstado == MisilEstado.IN_FLIGHT) {
             currentCoordinates = new Point2D.Double(currentCoordinates.getX() + xIncrement, currentCoordinates.getY() + yIncrement);
 
@@ -55,11 +55,11 @@ public class ICBM extends Misil {
     }
 
     /**
-     * @return  the coordinates of this ICBM's objetivo.
+     * @return  the coordenadas of this ICBM's objetivo.
      */
     @Override
     public Point2D.Double getTargetCoordinates() {
-        return objetivo.getCoordinates();
+        return objetivo.getCoordenadas();
     }
 
      /**

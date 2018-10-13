@@ -1,6 +1,5 @@
 package com.tallerlenguajesii.missilecommand;
 
-import com.tallerlenguajesii.mock.MockICBM;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
@@ -8,12 +7,6 @@ import static org.junit.Assert.*;
 import java.awt.geom.Point2D;
 import java.awt.*;
 
-/**
- * Unit tests for the <code>ICBM</code> test.
- * 
- * @author Alan Tibbetts
- * @since Feb 19, 2010, 2:27:40 PM
- */
 public class ICBMTest {
 
     private final int gameAreaHeight = 350;
@@ -21,61 +14,46 @@ public class ICBMTest {
 
     private final Ciudad targetCiudad = new Ciudad(new Point2D.Double(120, gameAreaHeight - 5));
 
-    private MockICBM icbm;
+    private ICBM icbm;
 
     @Before
     public void setUp() {
-        icbm = new MockICBM(50, targetCiudad, 1);
+        icbm = new ICBM(50, targetCiudad, 1);
     }
 
     @Test
-    public void createMissile() {
+    public void debeCrearMisil() {
         assertFalse(icbm.hasReachedTarget());
         assertEquals(Color.RED, icbm.getTrailColor());
         assertEquals(15, icbm.getGeneratedBlastRadius());
     }
 
-    @Test
-    public void yIncrementIsPositive() {
-        assertTrue(icbm.getYIncrement() > 0);
-    }
 
     @Test
-    public void positiveIncrement() {
-        assertTrue(icbm.getXIncrement() >= 0.0);
-    }
-
-    @Test
-    public void negativeIncrement() {
-        MockICBM icbm2 = new MockICBM(250, targetCiudad, 1);
-        assertTrue(icbm2.getXIncrement() <= 0.0);
-    }
-
-    @Test
-    public void moveMissile() {
+    public void debeMoverElMisil() {
         Point2D.Double initialCoordinates = icbm.getInitialCoordinates();
-        icbm.animate();
+        icbm.animar();
         assertTrue(initialCoordinates.getX() < icbm.getCurrentCoordinates().getX());
         assertTrue(initialCoordinates.getY() < icbm.getCurrentCoordinates().getY());
     }
 
     @Test
-    public void reachedTarget() {
-        for (int i = 0; i< targetCiudad.coordinates.getY(); i++) {
-            icbm.animate();
+    public void debeAlcanzarElObjetivo() {
+        for (int i = 0; i< targetCiudad.coordenadas.getY(); i++) {
+            icbm.animar();
         }
         assertTrue(icbm.hasReachedTarget());
     }
 
     @Test
-    public void destroy() {
+    public void destruir() {
         assertFalse(icbm.isDestroyed());
-        icbm.destroy();
+        icbm.destruir();
         assertTrue(icbm.isDestroyed());
     }
 
     @Test (expected=UnsupportedOperationException.class)
-    public void testBounds() {
-        Rectangle bounds = icbm.getBounds();
+    public void debeLanzarExcepcionAlObtenerLimitesDeDibujo() {
+        icbm.getLimites();
     }
 }

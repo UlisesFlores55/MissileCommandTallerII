@@ -1,19 +1,11 @@
 package com.tallerlenguajesii.missilecommand;
 
-import com.tallerlenguajesii.missilecommand.Ciudad;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
-
 import java.awt.geom.Point2D;
 import java.awt.*;
 
-/**
- * Unit tests for the <code>Ciudad</code> class.
- *
- * @author Alan Tibbetts
- * @since Feb 19, 2010, 3:09:28 PM
- */
 public class CiudadTest {
 
     private Ciudad ciudad;
@@ -24,25 +16,25 @@ public class CiudadTest {
     }
 
     @Test
-    public void notInitiallyDestroyed() {
-        assertFalse(ciudad.isDestroyed());
+    public void debeIniciarSinDestruirse() {
+        assertFalse(ciudad.estaDestruida());
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void animate() {
-        ciudad.animate();
+    public void debeArrojarExepcionAlAnimarCiudad() {
+        ciudad.animar();
     }
 
     @Test
-    public void destroyCity() {
-        assertFalse(ciudad.isDestroyed());
-        ciudad.destroy();
-        assertTrue(ciudad.isDestroyed());
+    public void debeDestruirCiudad() {
+        assertFalse(ciudad.estaDestruida());
+        ciudad.destruir();
+        assertTrue(ciudad.estaDestruida());
     }
 
     @Test
-    public void testBounds() {
-        Rectangle bounds = ciudad.getBounds();
+    public void debeEstarEntreLosLimites() {
+        Rectangle bounds = ciudad.getLimites();
         assertNotNull(bounds);
         assertEquals(20, (int) bounds.getHeight());
         assertEquals(20, (int) bounds.getWidth());

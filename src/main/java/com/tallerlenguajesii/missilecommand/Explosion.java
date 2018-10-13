@@ -37,7 +37,7 @@ public class Explosion implements ElementoJuego {
     /**
      * Expands or contracts the explosion by 1 pixel.
      */
-    public void animate() {
+    public void animar() {
         if (!complete) {
             if (expanding) {
                 currentRadius++;
@@ -59,13 +59,13 @@ public class Explosion implements ElementoJuego {
      *
      * @param graphicsContext
      */
-    public void draw(Graphics2D graphicsContext) {
+    public void dibujar(Graphics2D graphicsContext) {
         if (!complete) {
             graphicsContext.setPaint(Color.GRAY);
             currentExplosion = new Ellipse2D.Double(centreOfExplosion.getX() - currentRadius / 2, centreOfExplosion.getY() - currentRadius / 2, currentRadius, currentRadius);
             graphicsContext.fill(currentExplosion);
         } else {
-            logger.warn("Attempting to draw a completed explosion");
+            logger.warn("Attempting to dibujar a completed explosion");
         }
     }
 
@@ -88,14 +88,14 @@ public class Explosion implements ElementoJuego {
      *
      * Returns null if the explosion has been created but not yet drawn on the screen.
      */
-    public Rectangle getBounds() {
+    public Rectangle getLimites() {
         return currentExplosion == null ? null : currentExplosion.getBounds();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void destroy() {
+    public void destruir() {
         complete = true;
     }
 

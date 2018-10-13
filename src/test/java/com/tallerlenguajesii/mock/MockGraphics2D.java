@@ -14,20 +14,13 @@ import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
-/**
- * Extends the <code>Graphics2D</code> class to provide additional methods useful within
- * unit tests and the like.
- *
- * @author: Alan Tibbetts
- * @since: Feb 22, 2010, 8:25:53 PM
- */
 public class MockGraphics2D extends Graphics2D {
 
     private final Logger logger = Logger.getLogger(MockGraphics2D.class);
     
     @Override
     public void draw(Shape s) {
-        logger.info("draw: " + s);
+        logger.info("dibujar: " + s);
     }
 
     @Override

@@ -22,16 +22,16 @@ public abstract class Misil implements ElementoJuego {
         this.generatedBlastRadius = generatedBlastRadius;
     }
 
-    public void draw(Graphics2D graphics2D) {
+    public void dibujar(Graphics2D graphics2D) {
         switch (misilEstado) {
             case IN_FLIGHT:
                 drawInFlight(graphics2D);
                 break;
             case REACHED_TARGET:
-                logger.warn("Attempting to draw a missile that has already reached its target.");
+                logger.warn("Attempting to dibujar a missile that has already reached its target.");
                 break;
             case DESTROYED:
-                logger.warn("Attempting to draw a missile that has already been destroyed.");
+                logger.warn("Attempting to dibujar a missile that has already been destruida.");
                 break;
             default:
                 logger.warn("Unexpected Misil Status: " + misilEstado);
@@ -52,7 +52,7 @@ public abstract class Misil implements ElementoJuego {
         return misilEstado == MisilEstado.DESTROYED;
     }
 
-    public void destroy() {        
+    public void destruir() {
         misilEstado = MisilEstado.DESTROYED;
     }
 
@@ -74,7 +74,7 @@ public abstract class Misil implements ElementoJuego {
         return point;
     }
 
-    public Rectangle getBounds() {
+    public Rectangle getLimites() {
         throw new UnsupportedOperationException();
     }
 

@@ -29,12 +29,12 @@ public class ExplosionTest {
     public void explostionCreated() {
         assertEquals(0, explosion.getCurrentRadius());
         assertEquals(30, explosion.getMaximumBlastRadius());
-        assertNull(explosion.getBounds());
+        assertNull(explosion.getLimites());
     }
 
     @Test
     public void expandingExplosion() {
-        explosion.animate();
+        explosion.animar();
         assertEquals(1, explosion.getCurrentRadius());
     }
 
@@ -43,14 +43,14 @@ public class ExplosionTest {
         explosion.setCurrentRadius(20);
         explosion.setExpanding(false);
 
-        explosion.animate();
+        explosion.animar();
         assertEquals(19, explosion.getCurrentRadius());
     }
 
     @Test
     public void completeExplostion() {
         while (!explosion.isComplete()) {
-            explosion.animate();
+            explosion.animar();
         }
         assertEquals(0, explosion.getCurrentRadius());
     }
@@ -58,7 +58,7 @@ public class ExplosionTest {
     @Test
     public void destroy() {
         assertFalse(explosion.isComplete());
-        explosion.destroy();
+        explosion.destruir();
         assertTrue(explosion.isComplete());
     }
 
@@ -67,11 +67,11 @@ public class ExplosionTest {
         MockGraphics2D mockGraphicsContext = new MockGraphics2D();
 
         for (int i=0; i<10; i++) {
-            explosion.animate();
-            explosion.draw(mockGraphicsContext);
+            explosion.animar();
+            explosion.dibujar(mockGraphicsContext);
         }
 
-        Rectangle bounds = explosion.getBounds();
+        Rectangle bounds = explosion.getLimites();
         assertNotNull(bounds);
     }
 }

@@ -39,7 +39,7 @@ public class ControladorJuego implements Runnable {
             if (misil.hasReachedTarget() && !misil.isDestroyed()) {
                 controlExplosion.explodeMissile(misil);
             } else if (!misil.isDestroyed()) {
-                misil.draw(graphics2D);
+                misil.dibujar(graphics2D);
             }
         }
     }
@@ -88,7 +88,7 @@ public class ControladorJuego implements Runnable {
 
             for (Misil misil : misils) {
                 if (!misil.isDestroyed()) {
-                    misil.animate();
+                    misil.animar();
                 }
             }
 
@@ -125,7 +125,7 @@ public class ControladorJuego implements Runnable {
 
             if (allCitiesDestoyed()) {
                 for (Misil misil : misils) {
-                    misil.destroy();
+                    misil.destruir();
                 }
                 controlExplosion.completeAllExplosions();
                 campoDeJuego.repaint();
@@ -139,8 +139,8 @@ public class ControladorJuego implements Runnable {
 
     private boolean allCitiesDestoyed() {
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
-            if (objetoDefensivo.getType() == TipoObjetoDefensivo.CITY) {
-                if (!objetoDefensivo.isDestroyed()) {
+            if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.CITY) {
+                if (!objetoDefensivo.estaDestruida()) {
                     return false;
                 }
             }
@@ -175,7 +175,7 @@ public class ControladorJuego implements Runnable {
     private void resetForNewLevel() {
         misils = new ArrayList<Misil>();
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
-            if (objetoDefensivo.getType() == TipoObjetoDefensivo.MISSILE_BASE) {
+            if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.MISSILE_BASE) {
                 objetoDefensivo.reset();
             }
         }

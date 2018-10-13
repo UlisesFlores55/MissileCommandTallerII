@@ -60,7 +60,7 @@ public class CampoDeJuego extends JPanel implements Dibujable {
 
     private void drawDefensiveObjects(Graphics2D graphics2D) {
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
-            objetoDefensivo.draw(graphics2D);
+            objetoDefensivo.dibujar(graphics2D);
         }
     }
 
@@ -100,19 +100,19 @@ public class CampoDeJuego extends JPanel implements Dibujable {
             switch (key) {
                 case 'a':
                 case 'A':
-                    if (!misilBases.get(0).isDestroyed()) {
+                    if (!misilBases.get(0).estaDestruida()) {
                         controladorJuego.fireMissile(misilBases.get(0), mouseAdapter.getMouseCoordinates());
                     }
                     break;
                 case 's':
                 case 'S':
-                    if (!misilBases.get(1).isDestroyed()) {
+                    if (!misilBases.get(1).estaDestruida()) {
                         controladorJuego.fireMissile(misilBases.get(1), mouseAdapter.getMouseCoordinates());
                     }
                     break;
                 case 'd':
                 case 'D':
-                    if (!misilBases.get(2).isDestroyed()) {
+                    if (!misilBases.get(2).estaDestruida()) {
                         controladorJuego.fireMissile(misilBases.get(2), mouseAdapter.getMouseCoordinates());
                     }
                     break;

@@ -1,81 +1,58 @@
 package com.tallerlenguajesii.missilecommand;
 
 import org.apache.log4j.Logger;
-
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.*;
 
-/**
- * Represents one of the cities that the player must defend from incoming misils.
- *
- * @author Alan Tibbetts
- * @since Feb 19, 2010, 2:44:32 PM
- */
 public class Ciudad extends ObjetoDefensivo {
 
     private final Logger logger = Logger.getLogger(CampoDeJuego.class);
 
-    private static final int CITY_WIDTH = 20;
-    private static final int CITY_HEIGHT = 20;
+    private static final int CIUDAD_PESO = 20;
+    private static final int CIUDAD_ALTURA = 20;
 
-    private final TipoObjetoDefensivo type = TipoObjetoDefensivo.CITY;
-    private final Point2D.Double topLeftCoordinates;
-    private final Rectangle bounds;
+    private final TipoObjetoDefensivo tipo = TipoObjetoDefensivo.CITY;
+    private final Point2D.Double coordenadasIzquierdaSuperior;
+    private final Rectangle limites;
 
-    /**
-     * @param bottomLeftCoordinates   the coordinates of the bottom left corner of this city.
-     */
     public Ciudad(Point2D.Double bottomLeftCoordinates) {
-        super(new Point2D.Double(bottomLeftCoordinates.getX() + CITY_WIDTH / 2, bottomLeftCoordinates.getY() - CITY_HEIGHT / 2));
+        super(new Point2D.Double(bottomLeftCoordinates.getX() + CIUDAD_PESO / 2, bottomLeftCoordinates.getY() - CIUDAD_ALTURA / 2));
 
-        topLeftCoordinates = new Point2D.Double(bottomLeftCoordinates.getX(), bottomLeftCoordinates.getY() - CITY_HEIGHT);
-        bounds = new Rectangle((int) topLeftCoordinates.getX(), (int) topLeftCoordinates.getY(), CITY_WIDTH, CITY_HEIGHT);
+        coordenadasIzquierdaSuperior = new Point2D.Double(bottomLeftCoordinates.getX(), bottomLeftCoordinates.getY() - CIUDAD_ALTURA);
+        limites = new Rectangle((int) coordenadasIzquierdaSuperior.getX(), (int) coordenadasIzquierdaSuperior.getY(), CIUDAD_PESO, CIUDAD_ALTURA);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Ciudad created, coordinates: " + coordinates);
+            logger.debug("Ciudad creada, coordenadas: " + coordenadas);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void draw(Graphics2D graphicsContext) {
-        if (!isDestroyed()) {
+    public void dibujar(Graphics2D graphicsContext) {
+        if (!estaDestruida()) {
             graphicsContext.setPaint(Color.DARK_GRAY);
-            graphicsContext.fill(new Rectangle2D.Double(topLeftCoordinates.getX(), topLeftCoordinates.getY(), CITY_WIDTH, CITY_HEIGHT));
+            graphicsContext.fill(new Rectangle2D.Double(coordenadasIzquierdaSuperior.getX(), coordenadasIzquierdaSuperior.getY(), CIUDAD_PESO, CIUDAD_ALTURA));
         }
     }
 
-    /**
-     * Not supported.
-     */
-    public void animate() {
+    public void animar() {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Rectangle getBounds() {
-        return bounds;
+    public Rectangle getLimites() {
+        return limites;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void destroy() {
-        setDestroyed(true);
+    public void destruir() {
+        setDestruida(true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void reset() {
-        destroyed = false;
+        destruida = false;
     }
 
-    public TipoObjetoDefensivo getType() {
-        return type;
+    public TipoObjetoDefensivo getTipo() {
+        return tipo;
     }
 }

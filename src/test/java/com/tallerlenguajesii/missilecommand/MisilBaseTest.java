@@ -6,61 +6,52 @@ import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
 
-import com.tallerlenguajesii.mock.MockMisilBase;
 
-/**
- * Unit tests for the <code>MisilBase</code> class.
- *
- * @author Alan Tibbetts
- * @since Feb 19, 2010, 3:06:15 PM
- */
 public class MisilBaseTest {
 
-    private final Point2D.Double initialCoordinates = new Point2D.Double(200, 300);
-    private final Point2D.Double targetCoordinates = new Point2D.Double(100, 100);
+    private final Point2D.Double coordenadasIniciales = new Point2D.Double(200, 300);
+    private final Point2D.Double coordenadasObjetivo = new Point2D.Double(100, 100);
 
-    private MockMisilBase missileBase;
-
-    @Before
-    public void setup() {
-        missileBase = new MockMisilBase(initialCoordinates);
+    @Test
+    public void incialmenteNoDestruida() {
+        MisilBase misilBase = new MisilBase(coordenadasIniciales);
+        assertFalse(misilBase.estaDestruida());
     }
 
     @Test
-    public void notInitiallyDestroyed() {
-        assertFalse(missileBase.isDestroyed());
+    public void dispararMisil() {
+        MisilBase misilBase = new MisilBase(coordenadasIniciales);
+        assertEquals(20, misilBase.getCantidadMisiles());
+
+        MisilAntiBalistico abm = misilBase.fireMissile(coordenadasObjetivo);
+        assertEquals(19, misilBase.getCantidadMisiles());
+        assertEquals(misilBase.getCoordenadas(), abm.getCurrentCoordinates());
     }
 
     @Test
-    public void fireMissile() {
-        assertEquals(20, missileBase.getNumberOfMissilesRemaining());
+    public void sinMisilesRestantes() {
+        MisilBase misilBase = new MisilBase(coordenadasIniciales);
+        assertEquals(20, misilBase.getCantidadMisiles());
 
-        MisilAntiBalistico abm = missileBase.fireMissile(targetCoordinates);
-        assertEquals(19, missileBase.getNumberOfMissilesRemaining());
-        assertEquals(missileBase.getTopOfTriangle(), abm.getCurrentCoordinates());
-    }
+        misilBase.setCantidadMisiles(0);
 
-    @Test
-    public void noMissilesLeft() {
-        assertEquals(20, missileBase.getNumberOfMissilesRemaining());
-
-        missileBase.setNumberOfMissilesRemaining(0);
-
-        MisilAntiBalistico abm = missileBase.fireMissile(targetCoordinates);
+        MisilAntiBalistico abm = misilBase.fireMissile(coordenadasObjetivo);
         assertNull(abm);
-        assertEquals(0, missileBase.getNumberOfMissilesRemaining());
+        assertEquals(0, misilBase.getCantidadMisiles());
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void animate() {
-        missileBase.animate();
+    public void animar() {
+        MisilBase misilBase = new MisilBase(coordenadasIniciales);
+        misilBase.animar();
     }
 
     @Test
-    public void destroy() {
-        assertFalse(missileBase.isDestroyed());
-        missileBase.destroy();
-        assertTrue(missileBase.isDestroyed());
+    public void destruir() {
+        MisilBase misilBase = new MisilBase(coordenadasIniciales);
+        assertFalse(misilBase.estaDestruida());
+        misilBase.destruir();
+        assertTrue(misilBase.estaDestruida());
     }
 
 }
