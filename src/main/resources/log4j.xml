@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="mainLogFile" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="./misil-command.log"/>
+        <param name="Append" value="true"/>
+        <param name="maxBackupIndex" value="2"/>
+        <param name="maxFileSize" value="100MB"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%t] %d{HH:mm:ss,SSS} %-5p %c : %m\n"/>
+        </layout>
+    </appender>
+
+    <appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.SimpleLayout"/>
+    </appender>
+
+    <root>
+        <priority value="debug"/>
+        <appender-ref ref="ConsoleAppender"/>
+    </root>
+
+</log4j:configuration>
