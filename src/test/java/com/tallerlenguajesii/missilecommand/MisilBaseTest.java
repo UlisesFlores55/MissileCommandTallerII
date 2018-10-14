@@ -18,7 +18,7 @@ public class MisilBaseTest {
         this.misilBase = new MisilBase(coordenadasIniciales);
     }
     @Test
-    public void incialmenteNoDestruida() {
+    public void debeEstarIncialmenteNoDestruida() {
         assertFalse(misilBase.estaDestruida());
     }
 
