@@ -1,6 +1,8 @@
 package com.tallerlenguajesii.missilecommand;
 
 import org.apache.log4j.Logger;
+import taller2.grafico.Dibujable;
+import taller2.grafico.InformacionDibujable;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -16,10 +18,12 @@ public class ControladorJuego implements Runnable {
 
     private List<ObjetoDefensivo> objetoDefensivos;
     protected List<Misil> misils = new ArrayList<Misil>();
+    private int puntuacionGeneral = 0;
 
     private ControlExplosion controlExplosion;
     private GeneradorArmasEnemigas generadorArmasEnemigas;
     private boolean gameInProgress = false;
+
 
     public ControladorJuego(CampoDeJuego campoDeJuego, List<ObjetoDefensivo> objetoDefensivos) {
         this.campoDeJuego = campoDeJuego;
@@ -29,9 +33,18 @@ public class ControladorJuego implements Runnable {
         generadorArmasEnemigas = new GeneradorArmasEnemigas(campoDeJuego, objetoDefensivos);
     }
 
-    public void paint(Graphics2D graphics2D) {
+    public void graficar(Graphics2D graphics2D) {
         controlExplosion.drawExplosions(graphics2D);
         drawMissiles(graphics2D);
+        graficarEstadisticas(graphics2D);
+    }
+
+    public void graficarEstadisticas(Graphics2D graphics2D) {
+        int misilesActuales = this.campoDeJuego.getMisilBases().stream().mapToInt(MisilBase::getCantidadMisiles).sum();
+        graphics2D.drawString(String.format("Misiles en Bases: %d", misilesActuales), 25, 25);
+        int puntuacion = 25 * Math.toIntExact(this.controlExplosion.getMisilesDestruidos().stream().filter(Misil::isDestroyed).count());
+        graphics2D.drawString(String.format("Puntuacion: %d", this.puntuacionGeneral+puntuacion), 25, 55);
+
     }
 
     private void drawMissiles(Graphics2D graphics2D) {
@@ -111,7 +124,8 @@ public class ControladorJuego implements Runnable {
             beforeTime = System.currentTimeMillis();
 
             if (misils.size() < maximumMissiles && totalTime % 500 == 0) {
-                misils.add(generadorArmasEnemigas.createMissile(icbmSpeed));
+                ICBM icbm = generadorArmasEnemigas.createMissile(icbmSpeed);
+                misils.add(icbm);
             }
 
             controlExplosion.removeCompletedExplosions();

@@ -1,9 +1,6 @@
 package com.tallerlenguajesii.missilecommand;
 
 import org.apache.log4j.Logger;
-import taller2.grafico.Dibujable;
-import taller2.grafico.InformacionDibujable;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -15,7 +12,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CampoDeJuego extends JPanel implements Dibujable {
+public class CampoDeJuego extends JPanel {
 
     private final Logger logger = Logger.getLogger(CampoDeJuego.class);
 
@@ -43,11 +40,6 @@ public class CampoDeJuego extends JPanel implements Dibujable {
         addKeyListener(new MissileCommandKeyAdapter(missileCommandMouseAdapter));
     }
 
-
-    public InformacionDibujable getInformacionDibujable() {
-        return new InformacionDibujable(255, 345, 'H');
-    }
-
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -55,7 +47,7 @@ public class CampoDeJuego extends JPanel implements Dibujable {
         constructDefensiveArea(getParent().getHeight());
         drawLand(graphics2D, getParent().getHeight(), getParent().getWidth());
         drawDefensiveObjects(graphics2D);
-        controladorJuego.paint(graphics2D);
+        controladorJuego.graficar(graphics2D);
     }
 
     private void drawDefensiveObjects(Graphics2D graphics2D) {
@@ -147,5 +139,13 @@ public class CampoDeJuego extends JPanel implements Dibujable {
         public Point2D.Double getMouseCoordinates() {
             return new Point2D.Double(mouseCoorX, mouseCoorY);
         }
+    }
+
+    public List<MisilBase> getMisilBases() {
+        return misilBases;
+    }
+
+    public void setMisilBases(List<MisilBase> misilBases) {
+        this.misilBases = misilBases;
     }
 }
