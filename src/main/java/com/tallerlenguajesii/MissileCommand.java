@@ -8,7 +8,7 @@ public class MissileCommand extends JFrame {
     public MissileCommand() {
         getContentPane().add(new CampoDeJuego());
         setSize(720, 350);
-        setTitle("<< Missil Command >> [Taller Lenguajes II]");
+        setTitle("<< Missile Command >> [Taller Lenguajes II]");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);

@@ -4,7 +4,7 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
     <appender name="mainLogFile" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="./misil-command.log"/>
+        <param name="File" value="./missile-command.log"/>
         <param name="Append" value="true"/>
         <param name="maxBackupIndex" value="2"/>
         <param name="maxFileSize" value="100MB"/>

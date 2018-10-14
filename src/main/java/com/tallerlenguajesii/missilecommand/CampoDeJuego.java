@@ -1,7 +1,7 @@
 package com.tallerlenguajesii.missilecommand;
 
-import taller2.grafico.Dibujable;
-import taller2.grafico.InformacionDibujable;
+//import taller2.grafico.Dibujable;
+//import taller2.grafico.InformacionDibujable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CampoDeJuego extends JPanel implements Dibujable {
+public class CampoDeJuego extends JPanel  {
 
     private static final int CANT_CIUDADES = 6;
     private static final int BASES_CON_MISILES = 3;
@@ -41,9 +41,9 @@ public class CampoDeJuego extends JPanel implements Dibujable {
     }
 
 
-    public InformacionDibujable getInformacionDibujable() {
-        return new InformacionDibujable(255, 345, 'H');
-    }
+//    public InformacionDibujable getInformacionDibujable() {
+//        return new InformacionDibujable(255, 345, 'H');
+//    }
 
     @Override
     public void paint(Graphics g) {

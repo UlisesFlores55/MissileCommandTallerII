@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.blackenedsystems.games</groupId>
-    <artifactId>misil-command</artifactId>
+    <groupId>com.tallerlenguajesii</groupId>
+    <artifactId>missile-command</artifactId>
 
     <packaging>jar</packaging>
     <version>1.0</version>
 
-    <name>misil-command</name>
+    <name>missile-command</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
@@ -35,13 +35,24 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.4.0</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.6</version>
             <scope>test</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>graficadorTallerII</groupId>-->
+            <!--<artifactId>graficadorTallerII</artifactId>-->
+            <!--<scope>system</scope>-->
+            <!--<version>1.0</version>-->
+            <!--<systemPath>${basedir}/libs/graficador.jar</systemPath>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
