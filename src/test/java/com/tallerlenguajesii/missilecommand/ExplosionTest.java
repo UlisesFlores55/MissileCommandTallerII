@@ -1,33 +1,28 @@
 package com.tallerlenguajesii.missilecommand;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Test;
 import org.junit.Before;
 
 import java.awt.geom.Point2D;
 import java.awt.*;
 
-import com.tallerlenguajesii.mock.MockExplosion;
-import com.tallerlenguajesii.mock.MockGraphics2D;
-
-/**
- * Unit tests for the <code>Explosion</code> class.
- *
- * @author Alan Tibbetts
- * @since Feb 21, 2010, 10:54:40 PM
- */
 public class ExplosionTest {
 
-    private MockExplosion explosion;
+    private Explosion explosion;
+    private Graphics2D mockGraphicsContext;
 
     @Before
-    public void setup() {
-        explosion = new MockExplosion(new Point2D.Double(100,100), 30);
+    public void configuracionTest() {
+        this.explosion = new Explosion(new Point2D.Double(100,100), 30);
+        this.mockGraphicsContext = mock(Graphics2D.class);
     }
 
     @Test
     public void explostionCreated() {
-        assertEquals(0, explosion.getCurrentRadius());
+        assertEquals(0, explosion.getRadioActual());
         assertEquals(30, explosion.getMaximumBlastRadius());
         assertNull(explosion.getLimites());
     }
@@ -35,16 +30,16 @@ public class ExplosionTest {
     @Test
     public void expandingExplosion() {
         explosion.animar();
-        assertEquals(1, explosion.getCurrentRadius());
+        assertEquals(1, explosion.getRadioActual());
     }
 
     @Test
     public void contractingExplosion() {
-        explosion.setCurrentRadius(20);
+        explosion.setRadioActual(20);
         explosion.setExpanding(false);
 
         explosion.animar();
-        assertEquals(19, explosion.getCurrentRadius());
+        assertEquals(19, explosion.getRadioActual());
     }
 
     @Test
@@ -52,7 +47,7 @@ public class ExplosionTest {
         while (!explosion.isComplete()) {
             explosion.animar();
         }
-        assertEquals(0, explosion.getCurrentRadius());
+        assertEquals(0, explosion.getRadioActual());
     }
 
     @Test
@@ -63,15 +58,13 @@ public class ExplosionTest {
     }
 
     @Test
-    public void testBounds() {
-        MockGraphics2D mockGraphicsContext = new MockGraphics2D();
-
+    public void debeEstarLimitado() {
         for (int i=0; i<10; i++) {
             explosion.animar();
-            explosion.dibujar(mockGraphicsContext);
+            explosion.dibujar(this.mockGraphicsContext);
         }
 
-        Rectangle bounds = explosion.getLimites();
+        Rectangle bounds = this.explosion.getLimites();
         assertNotNull(bounds);
     }
 }

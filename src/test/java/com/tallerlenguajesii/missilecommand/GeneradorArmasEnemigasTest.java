@@ -1,55 +1,56 @@
 package com.tallerlenguajesii.missilecommand;
 
-import com.tallerlenguajesii.mock.MockCampoDeJuego;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
+import static org.mockito.Mockito.when;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Unit tests for the <code>GeneradorArmasEnemigas</code> class.
- *
- * @author: Alan Tibbetts
- * @since: Feb 22, 2010, 10:51:58 PM
- */
 public class GeneradorArmasEnemigasTest {
 
-    private static final int DEFENSIVE_OBJECT_Y_COORDINATE = 325;
+    private static final int OBJETO_DEFENSIVO_COOR_Y = 325;
 
-    private static final int[] CITY_X_COORDINATES = new int[]{60, 100, 140, 240, 280, 320};
-    private static final int[] MISSILE_BASE_X_COORDINATES = new int[]{15, 185, 355};
+    private static final int[] COORDENADAS_X_CIUDAD = new int[]{60, 100, 140, 240, 280, 320};
+    private static final int[] COORDENADAS_Y_BASES = new int[]{15, 185, 355};
 
     private List<ObjetoDefensivo> objetoDefensivos;
-    private GeneradorArmasEnemigas enemyWeaponsFactory;
-    private MockCampoDeJuego gameArea;
+    private GeneradorArmasEnemigas armasEnemigas;
+    private CampoDeJuego area;
+    private Container container;
 
     @Before
     public void setup() {
-        gameArea = new MockCampoDeJuego();
+        this.area = mock(CampoDeJuego.class);
+        this.container = mock(Container.class);
 
-        objetoDefensivos = new ArrayList<ObjetoDefensivo>();
+        this.objetoDefensivos = new ArrayList<ObjetoDefensivo>();
 
-        for (int xCoordinate : CITY_X_COORDINATES) {
-            Ciudad ciudad = new Ciudad(new Point2D.Double(xCoordinate, DEFENSIVE_OBJECT_Y_COORDINATE));
+        for (int xCoordinate : COORDENADAS_X_CIUDAD) {
+            Ciudad ciudad = new Ciudad(new Point2D.Double(xCoordinate, OBJETO_DEFENSIVO_COOR_Y));
             objetoDefensivos.add(ciudad);
         }
 
-        for (int xCoordinate : MISSILE_BASE_X_COORDINATES) {
-            MisilBase misilBase = new MisilBase(new Point2D.Double(xCoordinate, DEFENSIVE_OBJECT_Y_COORDINATE));
+        for (int xCoordinate : COORDENADAS_Y_BASES) {
+            MisilBase misilBase = new MisilBase(new Point2D.Double(xCoordinate, OBJETO_DEFENSIVO_COOR_Y));
             objetoDefensivos.add(misilBase);
         }
 
-        enemyWeaponsFactory = new GeneradorArmasEnemigas(gameArea, objetoDefensivos);
+        armasEnemigas = new GeneradorArmasEnemigas(area, objetoDefensivos);
     }
 
     @Test
-    public void createIcbm() {
-        ICBM icbm = enemyWeaponsFactory.createMissile(1);
+    public void debeCrearICBM() {
+        when(this.container.getWidth()).thenReturn(400);
+        when(this.area.getParent()).thenReturn(this.container);
+        ICBM icbm = this.armasEnemigas.createMissile(1);
         assertNotNull(icbm);
         assertTrue(icbm.getInitialCoordinates().getX() >= 0);
-        assertTrue(icbm.getInitialCoordinates().getX() < gameArea.getParent().getWidth());
+        assertTrue(icbm.getInitialCoordinates().getX() < area.getParent().getWidth());
     }
 }

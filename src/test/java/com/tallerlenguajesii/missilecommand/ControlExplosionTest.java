@@ -1,9 +1,11 @@
 package com.tallerlenguajesii.missilecommand;
 
-import com.tallerlenguajesii.mock.MockGraphics2D;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+
+import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.geom.Point2D;
@@ -15,18 +17,19 @@ public class ControlExplosionTest {
     private ControlExplosion mockExplosionController;
     private List<Misil> misils;
     private List<ObjetoDefensivo> objetoDefensivos;
+    private Graphics2D mockGraphicsContext = mock(Graphics2D.class);
 
     @Before
     public void setup() {
         misils = new ArrayList<Misil>();
         objetoDefensivos = new ArrayList<ObjetoDefensivo>();
         objetoDefensivos.add(new Ciudad(new Point2D.Double()));
+        this.mockExplosionController = new ControlExplosion(this.misils, this.objetoDefensivos);
     }
 
 
     @Test
     public void despuesDeInstanciar() {
-        mockExplosionController = new ControlExplosion(this.misils, this.objetoDefensivos);
         assertEquals(0, mockExplosionController.misils.size());
         assertEquals(1, mockExplosionController.objetoDefensivos.size());
         assertEquals(0, mockExplosionController.explosions.size());
@@ -45,7 +48,6 @@ public class ControlExplosionTest {
 
     @Test
     public void debeExplotarMisil() {
-        mockExplosionController = new ControlExplosion(this.misils, this.objetoDefensivos);
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
         icbm.currentCoordinates.setLocation(new Point2D.Double(150, 212.5));
         misils.add(icbm);
@@ -60,10 +62,6 @@ public class ControlExplosionTest {
 
     @Test
     public void debeExplotarCuandoCoisionaContraElMisil() {
-        mockExplosionController = new ControlExplosion(this.misils, this.objetoDefensivos);
-
-        MockGraphics2D mockGraphicsContext = new MockGraphics2D();
-
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
         icbm.currentCoordinates.setLocation(new Point2D.Double(150, 212.5));
         misils.add(icbm);
@@ -89,9 +87,6 @@ public class ControlExplosionTest {
 
     @Test
     public void removalOfCompletedExplosions() {
-        mockExplosionController = new ControlExplosion(this.misils, this.objetoDefensivos);
-        MockGraphics2D mockGraphicsContext = new MockGraphics2D();
-
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
         icbm.currentCoordinates.setLocation(new Point2D.Double(150, 212.5));
         misils.add(icbm);

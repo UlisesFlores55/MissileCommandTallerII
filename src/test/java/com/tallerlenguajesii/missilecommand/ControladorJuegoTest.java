@@ -33,7 +33,7 @@ public class ControladorJuegoTest {
     }
 
     @Test
-    public void fireMissile() {
+    public void debeDispararMisil() {
         ControladorJuego controlador = new ControladorJuego(this.campoDeJuego, this.objetosDefensivos);
         when(misilBases.get(eq(0))).thenReturn(new MisilBase(new Point2D.Double(60, OBJETO_DEFENSIVO_COOR_Y)));
         assertEquals(0, controlador.misils.size());
