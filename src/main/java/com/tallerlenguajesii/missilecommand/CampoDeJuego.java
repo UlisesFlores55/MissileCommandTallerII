@@ -129,24 +129,26 @@ public class CampoDeJuego extends JPanel implements Dibujable {
      //Entrada Mouse
     private class MissileCommandMouseAdaptador extends MouseAdapter {
 
-        private double mouseCoordenadaX;
-        private double mouseCoordenadaY;
+         private double mouseCoordenadaX;
+         private double mouseCoordenadaY;
 
-        public void mouseEntro(MouseEvent e) {
-            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-        }
+         @Override
+         public void mouseEntered(MouseEvent e) {
+             setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+         }
 
-        public void mouseSalio(MouseEvent e) {
-            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-        }
+         @Override
+         public void mouseExited(MouseEvent e) {
+             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+         }
 
-        public void mouseMovio(MouseEvent e) {
-            mouseCoordenadaX = e.getPoint().getX();
-            mouseCoordenadaY = e.getPoint().getY();
-        }
+         public void mouseMoved(MouseEvent e) {
+             mouseCoordenadaX = e.getPoint().getX();
+             mouseCoordenadaY = e.getPoint().getY();
+         }
 
-        public Point2D.Double getMouseCoordenadas() {
-            return new Point2D.Double(mouseCoordenadaX, mouseCoordenadaY);
-        }
+         public Point2D.Double getMouseCoordenadas() {
+             return new Point2D.Double(mouseCoordenadaX, mouseCoordenadaY);
+         }
     }
 }
