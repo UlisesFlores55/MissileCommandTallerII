@@ -10,16 +10,15 @@ import java.awt.geom.Point2D;
 public class ControladorJuego implements Runnable {
 
     private final Logger logger = Logger.getLogger(ControladorJuego.class);
-
     private final int DELAY = 50;
     private final CampoDeJuego campoDeJuego;
-
     private List<ObjetoDefensivo> objetoDefensivo;
     protected List<Misil> misiles = new ArrayList<Misil>();
-
     private ControlExplosion controlExplosion;
     private GeneradorArmasEnemigas generadorArmasEnemigas;
     private boolean juegoEnProgreso = false;
+    private int puntuacionGeneral = 0;
+    private int nivel = 1;
 
     public ControladorJuego(CampoDeJuego campoDeJuego, List<ObjetoDefensivo> objetoDefensivo) {
         this.campoDeJuego = campoDeJuego;
@@ -32,6 +31,21 @@ public class ControladorJuego implements Runnable {
     public void pintar(Graphics2D graphics2D) {
         controlExplosion.dibujarExplosiones(graphics2D);
         dibujarMisiles(graphics2D);
+        graficarEstadisticas(graphics2D);
+    }
+
+    private void graficarEstadisticas(Graphics2D graphics2D) {
+        int misilesActuales = this.campoDeJuego.getMisilBases().stream().mapToInt(MisilBase::getCantidadMisiles).sum();
+        graphics2D.drawString(String.format("Misiles en Bases: %d", misilesActuales), 20, 35);
+        graphics2D.drawString(String.format("Puntuacion: %d", puntuacionTotal()), 20, 55);
+        graphics2D.drawString(String.format("Nivel: %d", this.nivel), 20, 75);
+    }
+
+    private int puntuacionTotal() {
+        return this.puntuacionGeneral + this.puntuacionActual();
+    }
+    private int puntuacionActual() {
+        return 25 * Math.toIntExact(this.controlExplosion.getMisilesDestruidos().stream().filter(Misil::estaDestruido).count());
     }
 
     private void dibujarMisiles(Graphics2D graphics2D) {
@@ -117,8 +131,8 @@ public class ControladorJuego implements Runnable {
             controlExplosion.eliminarExplosionesCompletadas();
 
             if (todosMisilesDestruidos() && controlExplosion.todasExplosionesCompletadas()) {
+                this.puntuacionGeneral = this.puntuacionTotal();
                 this.resetNuevoNivel();
-
                 // subir dificultad...
                 velocidadICBM = velocidadICBM == 3 ? velocidadICBM : velocidadICBM + 1;
                 misilesMaximos = misilesMaximos == 30 ? misilesMaximos : misilesMaximos + 5;
@@ -174,7 +188,8 @@ public class ControladorJuego implements Runnable {
     }
 
     private void resetNuevoNivel() {
-        misiles = new ArrayList<Misil>();
+        this.nivel++;
+        this.misiles = new ArrayList<Misil>();
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivo) {
             if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.MISIL_BASE) {
                 objetoDefensivo.reset();

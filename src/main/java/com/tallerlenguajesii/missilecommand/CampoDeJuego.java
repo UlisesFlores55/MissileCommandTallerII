@@ -151,4 +151,12 @@ public class CampoDeJuego extends JPanel implements Dibujable {
              return new Point2D.Double(mouseCoordenadaX, mouseCoordenadaY);
          }
     }
+
+    public List<MisilBase> getMisilBases() {
+        return misilBases;
+    }
+
+    public void setMisilBases(List<MisilBase> misilBases) {
+        this.misilBases = misilBases;
+    }
 }

@@ -14,6 +14,7 @@ public class ControlExplosion {
     protected List<Explosion> explosiones = new ArrayList<Explosion>();
     protected List<Misil> misiles;
     protected List<ObjetoDefensivo> objetoDefensivo;
+    private List<Misil> misilesDestruidos = new ArrayList<Misil>();
 
     public ControlExplosion(List<Misil> misiles, List<ObjetoDefensivo> objetoDefensivo) {
         this.misiles = misiles;
@@ -93,7 +94,9 @@ public class ControlExplosion {
         if (logger.isDebugEnabled()) {
             logger.debug("Misil exploto en coordenadas: " + misil.getCoordenadasActuales());
         }
-
+        if(misil.getColorDelRastro().equals(Color.RED) && misil.getCoordenadasActuales().getY() != 308.0) {
+            misilesDestruidos.add(misil);
+        }
         Explosion explosion = new Explosion(misil.getCoordenadasActuales(), misil.getRadioGeneradoPorExplosion());
         listaExplosiones.add(explosion);
         misil.destruir();
@@ -103,5 +106,13 @@ public class ControlExplosion {
         for (Explosion explosion : explosiones) {
             explosion.destruir();
         }
+    }
+
+    public List<Misil> getMisilesDestruidos() {
+        return misilesDestruidos;
+    }
+
+    public void setMisilesDestruidos(List<Misil> misilesDestruidos) {
+        this.misilesDestruidos = misilesDestruidos;
     }
 }
