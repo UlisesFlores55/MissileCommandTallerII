@@ -5,45 +5,46 @@ import org.apache.log4j.Logger;
 import java.awt.geom.Point2D;
 import java.awt.*;
 
+// Clase que representa los misiles Antibalisticos
 public class MisilAntiBalistico extends Misil {
 
     private final Logger logger = Logger.getLogger(MisilAntiBalistico.class);
 
     private static final int RADIO_ESTALLIDO = 30;
 
-    private final Point2D.Double targetCoordinates;
+    private final Point2D.Double coordendasObjetivo;
 
-    protected double xIncrement;
-    protected double yDecrement;
+    protected double xIncrementa;
+    protected double yDecrementa;
 
-    public MisilAntiBalistico(Point2D.Double initialCoordinates, Point2D.Double targetCoordinates, int speed) {
-        super(initialCoordinates, RADIO_ESTALLIDO);
-        this.targetCoordinates = targetCoordinates;
-        calculateIncrements(speed);
+    public MisilAntiBalistico(Point2D.Double coordenadasIniciales, Point2D.Double coordendasObjetivo, int velocidad) {
+        super(coordenadasIniciales, RADIO_ESTALLIDO);
+        this.coordendasObjetivo = coordendasObjetivo;
+        calcularIncrementos(velocidad);
     }
 
-    private void calculateIncrements(int speed) {
-        yDecrement = speed;
-        xIncrement = (targetCoordinates.getX() - this.initialCoordinates.getX()) / (initialCoordinates.getY() - targetCoordinates.getY()) * speed;
+    private void calcularIncrementos(int velocidad) {
+        yDecrementa = velocidad;
+        xIncrementa = (coordendasObjetivo.getX() - this.coordenadasIniciales.getX()) / (coordenadasIniciales.getY() - coordendasObjetivo.getY()) * velocidad;
     }
 
     public void animar() {
-        if (misilEstado == MisilEstado.IN_FLIGHT) {
-            currentCoordinates = new Point2D.Double(currentCoordinates.getX() + xIncrement, currentCoordinates.getY() - yDecrement);
+        if (misilEstado == MisilEstado.EN_VUELO) {
+            coordendasActuales = new Point2D.Double(coordendasActuales.getX() + xIncrementa, coordendasActuales.getY() - yDecrementa);
 
-            if (currentCoordinates.getY() <= targetCoordinates.getY()) {
-                misilEstado = MisilEstado.REACHED_TARGET;
+            if (coordendasActuales.getY() <= coordendasObjetivo.getY()) {
+                misilEstado = MisilEstado.OBJETIVO_ALCANZADO;
             }
         }
     }
 
     @Override
-    public Point2D.Double getTargetCoordinates() {
-        return targetCoordinates;
+    public Point2D.Double getCoordendasObjetivo() {
+        return coordendasObjetivo;
     }
 
     @Override
-    protected Color getTrailColor() {
+    protected Color getColorDelRastro() {
         return Color.BLUE;
     }
 }

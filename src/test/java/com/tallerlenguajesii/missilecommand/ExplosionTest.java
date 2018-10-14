@@ -23,7 +23,7 @@ public class ExplosionTest {
     @Test
     public void explostionCreated() {
         assertEquals(0, explosion.getRadioActual());
-        assertEquals(30, explosion.getMaximumBlastRadius());
+        assertEquals(30, explosion.getRadioMaximoDeExplosion());
         assertNull(explosion.getLimites());
     }
 
@@ -36,7 +36,7 @@ public class ExplosionTest {
     @Test
     public void contractingExplosion() {
         explosion.setRadioActual(20);
-        explosion.setExpanding(false);
+        explosion.setExpandiendo(false);
 
         explosion.animar();
         assertEquals(19, explosion.getRadioActual());
@@ -44,7 +44,7 @@ public class ExplosionTest {
 
     @Test
     public void completeExplostion() {
-        while (!explosion.isComplete()) {
+        while (!explosion.estaCompleta()) {
             explosion.animar();
         }
         assertEquals(0, explosion.getRadioActual());
@@ -52,9 +52,9 @@ public class ExplosionTest {
 
     @Test
     public void destroy() {
-        assertFalse(explosion.isComplete());
+        assertFalse(explosion.estaCompleta());
         explosion.destruir();
-        assertTrue(explosion.isComplete());
+        assertTrue(explosion.estaCompleta());
     }
 
     @Test

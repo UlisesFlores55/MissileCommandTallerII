@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GeneradorArmasEnemigas {
 
-    private final Random randomNumberGenerator = new Random();
+    private final Random generadorNumerosRandom = new Random();
 
     private final List<ObjetoDefensivo> objetivos;
     private final CampoDeJuego campoDeJuego;
@@ -15,16 +15,16 @@ public class GeneradorArmasEnemigas {
         this.objetivos = objetivos;
     }
 
-    public ICBM createMissile(int speed) {
-        return new ICBM(generateInitialXCoordinate(), selectTarget(), speed);
+    public ICBM crearMisil(int velocidad) {
+        return new ICBM(generarCoordenadaInicialX(), seleccionarObjetivo(), velocidad);
     }
 
-    private ObjetoDefensivo selectTarget() {
-        int targetId = randomNumberGenerator.nextInt(objetivos.size() - 1);
-        return objetivos.get(targetId);
+    private ObjetoDefensivo seleccionarObjetivo() {
+        int idObjetivo = generadorNumerosRandom.nextInt(objetivos.size() - 1);
+        return objetivos.get(idObjetivo);
     }
 
-    public int generateInitialXCoordinate() {
-        return randomNumberGenerator.nextInt(campoDeJuego.getParent().getWidth() - 1);
+    public int generarCoordenadaInicialX() {
+        return generadorNumerosRandom.nextInt(campoDeJuego.getParent().getWidth() - 1);
     }
 }

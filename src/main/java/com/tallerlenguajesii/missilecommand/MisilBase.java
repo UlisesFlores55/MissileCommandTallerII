@@ -9,60 +9,60 @@ public class MisilBase extends ObjetoDefensivo {
 
     private final Logger logger = Logger.getLogger(MisilBase.class);
 
-    private static final int ABM_SPEED = 5;
+    private static final int MAB_VELOCIDAD = 5;
 
-    protected static final int MISSILE_BASE_HEIGHT = 50;
-    protected static final int MISSILE_BASE_WIDTH = 30;
-    private static final int INITIAL_NUMBER_OF_MISSILES = 20;
+    protected static final int MISIL_BASE_ALTURA = 50;
+    protected static final int MISIL_BASE_ANCHO = 30;
+    private static final int MISILES_INICIALES = 20;
 
-    protected final int[] xCoordinates;
-    protected final int[] yCoordinates;
+    protected final int[] xCoordenadas;
+    protected final int[] yCoordenadas;
     private final Rectangle limites;
-    private final TipoObjetoDefensivo type = TipoObjetoDefensivo.MISSILE_BASE;
+    private final TipoObjetoDefensivo tipo = TipoObjetoDefensivo.MISIL_BASE;
 
-    private int cantidadMisiles = INITIAL_NUMBER_OF_MISSILES;
+    private int cantidadMisiles = MISILES_INICIALES;
 
-    public MisilBase(Point2D.Double bottomLeftCoordinates) {
-        super(new Point2D.Double(bottomLeftCoordinates.getX() + MISSILE_BASE_WIDTH / 2, bottomLeftCoordinates.getY() - MISSILE_BASE_HEIGHT / 2));
+    public MisilBase(Point2D.Double coordenadasIzquierdaInferior) {
+        super(new Point2D.Double(coordenadasIzquierdaInferior.getX() + MISIL_BASE_ANCHO / 2, coordenadasIzquierdaInferior.getY() - MISIL_BASE_ALTURA / 2));
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Misil Base created, coordenadas: " + coordenadas);
+            logger.debug("Misil Base creado, coordenadas: " + coordenadas);
         }
 
-        xCoordinates = new int[]{(int) bottomLeftCoordinates.getX(), (int) (bottomLeftCoordinates.getX() + MISSILE_BASE_WIDTH / 2), (int) (bottomLeftCoordinates.getX() + MISSILE_BASE_WIDTH)};
-        yCoordinates = new int[]{(int) bottomLeftCoordinates.getY(), (int) (bottomLeftCoordinates.getY() - MISSILE_BASE_HEIGHT / 2), (int) bottomLeftCoordinates.getY()};
+        xCoordenadas = new int[]{(int) coordenadasIzquierdaInferior.getX(), (int) (coordenadasIzquierdaInferior.getX() + MISIL_BASE_ANCHO / 2), (int) (coordenadasIzquierdaInferior.getX() + MISIL_BASE_ANCHO)};
+        yCoordenadas = new int[]{(int) coordenadasIzquierdaInferior.getY(), (int) (coordenadasIzquierdaInferior.getY() - MISIL_BASE_ALTURA / 2), (int) coordenadasIzquierdaInferior.getY()};
 
-        limites = new Rectangle((int) bottomLeftCoordinates.getX(), ((int) bottomLeftCoordinates.getY()) - MISSILE_BASE_HEIGHT, MISSILE_BASE_WIDTH, MISSILE_BASE_HEIGHT);
+        limites = new Rectangle((int) coordenadasIzquierdaInferior.getX(), ((int) coordenadasIzquierdaInferior.getY()) - MISIL_BASE_ALTURA, MISIL_BASE_ANCHO, MISIL_BASE_ALTURA);
     }
 
-    public MisilAntiBalistico fireMissile(Point2D.Double targetCoordinates) {
+    public MisilAntiBalistico dispararMisil(Point2D.Double coordenadasObjetivo) {
         if (cantidadMisiles == 0) {
-            logger.info("Misil base no tiene mas misiles.");
+            logger.info("La base no tiene mas misiles.");
             return null;
         }
 
         cantidadMisiles--;
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Misil fired, base has " + cantidadMisiles + " misils remaining");
+            logger.debug("Misil disparado, la base tiene " + cantidadMisiles + " misiles restantes");
         }
 
-        Point2D.Double topOfTriangle = new Point2D.Double(xCoordinates[1], yCoordinates[1]);
-        return new MisilAntiBalistico(topOfTriangle, targetCoordinates, ABM_SPEED);
+        Point2D.Double cimaDelTriangulo = new Point2D.Double(xCoordenadas[1], yCoordenadas[1]);
+        return new MisilAntiBalistico(cimaDelTriangulo, coordenadasObjetivo, MAB_VELOCIDAD);
     }
 
     public int getCantidadMisiles() {
         return cantidadMisiles;
     }
 
-    public void setCantidadMisiles(int numberOfMissiles) {
-        this.cantidadMisiles = numberOfMissiles;
+    public void setCantidadMisiles(int numeroMisiles) {
+        this.cantidadMisiles = numeroMisiles;
     }
 
     public void dibujar(Graphics2D graphicsContext) {
         if (!estaDestruida()) {
             graphicsContext.setPaint(Color.WHITE);
-            graphicsContext.fill(new Polygon(xCoordinates, yCoordinates, 3));
+            graphicsContext.fill(new Polygon(xCoordenadas, yCoordenadas, 3));
         }
     }
 
@@ -80,10 +80,10 @@ public class MisilBase extends ObjetoDefensivo {
 
     public void reset() {
         destruida = false;
-        cantidadMisiles = INITIAL_NUMBER_OF_MISSILES;
+        cantidadMisiles = MISILES_INICIALES;
     }
 
     public TipoObjetoDefensivo getTipo() {
-        return type;
+        return tipo;
     }
 }

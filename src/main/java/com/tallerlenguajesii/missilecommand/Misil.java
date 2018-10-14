@@ -6,80 +6,83 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Line2D;
 import java.awt.*;
 
+// Clase abstracta sobre la cual se basan los misiles
 public abstract class Misil implements ElementoJuego {
 
     private final Logger logger = Logger.getLogger(Misil.class);
 
-    protected final Point2D.Double initialCoordinates;
-    protected final int generatedBlastRadius;
+    protected final Point2D.Double coordenadasIniciales;
+    protected final int radioExplosionGenerado;
 
-    protected Point2D.Double currentCoordinates;
-    protected MisilEstado misilEstado = MisilEstado.IN_FLIGHT;
+    protected Point2D.Double coordendasActuales;
+    protected MisilEstado misilEstado = MisilEstado.EN_VUELO;
 
-    public Misil(Point2D.Double initialCoordinates, int generatedBlastRadius) {
-        this.initialCoordinates = initialCoordinates;
-        this.currentCoordinates = initialCoordinates;
-        this.generatedBlastRadius = generatedBlastRadius;
+    public Misil(Point2D.Double coordenadasIniciales, int radioExplosionGenerado) {
+        this.coordenadasIniciales = coordenadasIniciales;
+        this.coordendasActuales = coordenadasIniciales;
+        this.radioExplosionGenerado = radioExplosionGenerado;
     }
 
+    // Dibujar dependiendo del estado del misil
     public void dibujar(Graphics2D graphics2D) {
         switch (misilEstado) {
-            case IN_FLIGHT:
-                drawInFlight(graphics2D);
+            case EN_VUELO:
+                dibujarEnVuelo(graphics2D);
                 break;
-            case REACHED_TARGET:
-                logger.warn("Attempting to dibujar a missile that has already reached its target.");
+            case OBJETIVO_ALCANZADO:
+                logger.warn("Intentando dibujar un misil que ya ha alcanzado su objetivo");
                 break;
-            case DESTROYED:
-                logger.warn("Attempting to dibujar a missile that has already been destruida.");
+            case DESTRUIDO:
+                logger.warn("Intentando dibujar un misil que ya ha sido destruido");
                 break;
             default:
-                logger.warn("Unexpected Misil Status: " + misilEstado);
+                logger.warn("Estado del misil inesperado: " + misilEstado);
         }
     }
 
-    private void drawInFlight(Graphics2D graphics2D) {
-        Line2D.Double line = new Line2D.Double(initialCoordinates, currentCoordinates);
-        graphics2D.setColor(getTrailColor());
-        graphics2D.draw(line);
+    // Dibuja el rastro del misil
+    private void dibujarEnVuelo(Graphics2D graphics2D) {
+        Line2D.Double linea = new Line2D.Double(coordenadasIniciales, coordendasActuales);
+        graphics2D.setColor(getColorDelRastro());
+        graphics2D.draw(linea);
     }
 
-    public boolean hasReachedTarget() {
-        return misilEstado == MisilEstado.REACHED_TARGET;
+    public boolean alcanzoObjetivo() {
+        return misilEstado == MisilEstado.OBJETIVO_ALCANZADO;
     }
 
-    public boolean isDestroyed() {
-        return misilEstado == MisilEstado.DESTROYED;
+    public boolean estaDestruido() {
+        return misilEstado == MisilEstado.DESTRUIDO;
     }
 
     public void destruir() {
-        misilEstado = MisilEstado.DESTROYED;
+        misilEstado = MisilEstado.DESTRUIDO;
     }
 
-    public int getGeneratedBlastRadius() {
-        return generatedBlastRadius;
+    public int getRadioGeneradoPorExplosion() {
+        return radioExplosionGenerado;
     }
 
-    public Point2D.Double getInitialCoordinates() {
-        return initialCoordinates;
+    public Point2D.Double getCoordenadasIniciales() {
+        return coordenadasIniciales;
     }
 
-    public Point2D.Double getCurrentCoordinates() {
-        return currentCoordinates;
+    public Point2D.Double getCoordenadasActuales() {
+        return coordendasActuales;
     }
 
-    public Point getLocation() {
-        Point point = new Point();
-        point.setLocation(currentCoordinates.getX(), currentCoordinates.getY());
-        return point;
+    public Point getLugarActual() {
+        Point punto = new Point();
+        punto.setLocation(coordendasActuales.getX(), coordendasActuales.getY());
+        return punto;
     }
 
     public Rectangle getLimites() {
         throw new UnsupportedOperationException();
     }
 
-    public abstract Point2D.Double getTargetCoordinates();
+    public abstract Point2D.Double getCoordendasObjetivo();
 
-    protected abstract Color getTrailColor();
+    protected abstract Color getColorDelRastro();
 
 }

@@ -23,16 +23,16 @@ public class MisilAntiBalisticoTest {
 
     @Test
     public void createMissile() {
-        assertFalse(abm.hasReachedTarget());
-        assertEquals(Color.BLUE, abm.getTrailColor());
-        assertEquals(30, abm.getGeneratedBlastRadius());
+        assertFalse(abm.alcanzoObjetivo());
+        assertEquals(Color.BLUE, abm.getColorDelRastro());
+        assertEquals(30, abm.getRadioGeneradoPorExplosion());
     }
 
     @Test
     public void debeMoverMisil() {
         abm.animar();
-        assertTrue(abm.getCurrentCoordinates().getX() > sourceCoordinates.getX());
-        assertTrue(abm.getCurrentCoordinates().getY() < sourceCoordinates.getY());
+        assertTrue(abm.getCoordenadasActuales().getX() > sourceCoordinates.getX());
+        assertTrue(abm.getCoordenadasActuales().getY() < sourceCoordinates.getY());
     }
 
     @Test
@@ -42,14 +42,14 @@ public class MisilAntiBalisticoTest {
         for (int i=0; i<verticalDifference; i++) {
             abm.animar();
         }
-        assertTrue(abm.hasReachedTarget());
+        assertTrue(abm.alcanzoObjetivo());
     }
 
     @Test
     public void debeDestruirse() {
-        assertFalse(abm.isDestroyed());
+        assertFalse(abm.estaDestruido());
         abm.destruir();
-        assertTrue(abm.isDestroyed());
+        assertTrue(abm.estaDestruido());
     }
 
     @Test (expected=UnsupportedOperationException.class)
