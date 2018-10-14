@@ -3,7 +3,12 @@ package com.tallerlenguajesii.missilecommand;
 import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 
 
@@ -12,14 +17,16 @@ public class MisilBaseTest {
     private final Point2D.Double coordenadasIniciales = new Point2D.Double(200, 300);
     private final Point2D.Double coordenadasObjetivo = new Point2D.Double(100, 100);
     private MisilBase misilBase;
+    private Graphics2D graphics2D = mock(Graphics2D.class);
 
     @Before
     public void configuracionTest() {
         this.misilBase = new MisilBase(coordenadasIniciales);
     }
+
     @Test
     public void debeEstarIncialmenteNoDestruida() {
-        assertFalse(misilBase.estaDestruida());
+        assertFalse(misilBase.estaDestruido());
     }
 
     @Test
@@ -50,9 +57,22 @@ public class MisilBaseTest {
 
     @Test
     public void debeDestruir() {
-        assertFalse(this.misilBase.estaDestruida());
+        assertFalse(this.misilBase.estaDestruido());
         this.misilBase.destruir();
-        assertTrue(this.misilBase.estaDestruida());
+        assertTrue(this.misilBase.estaDestruido());
     }
 
+    @Test
+    public void debeDibujar() {
+        this.misilBase.dibujar(this.graphics2D);
+        verify(this.graphics2D, times(1)).setPaint(eq(Color.WHITE));
+    }
+
+    @Test
+    public void debeResetear() {
+        this.misilBase.destruir();
+        assertTrue(this.misilBase.estaDestruido());
+        this.misilBase.reiniciar();
+        assertEquals(20, this.misilBase.getCantidadMisiles());
+    }
 }

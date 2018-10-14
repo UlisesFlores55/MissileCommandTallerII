@@ -9,10 +9,8 @@ import java.awt.*;
 public class Explosion implements ElementoJuego {
 
     private final Logger logger = Logger.getLogger(Explosion.class);
-
     private final Point2D.Double centroDeExplosion;
     private final int radioMaximoDeExplosion;
-
     private int radioActual = 0;
     private boolean expandiendo = true;
     private boolean completado = false;
@@ -42,7 +40,7 @@ public class Explosion implements ElementoJuego {
 
     public void dibujar(Graphics2D graphicsContext) {
         if (!completado) {
-            graphicsContext.setPaint(Color.GRAY);
+            graphicsContext.setPaint(Color.ORANGE);
             explosionActual = new Ellipse2D.Double(centroDeExplosion.getX() - radioActual / 2, centroDeExplosion.getY() - radioActual / 2, radioActual, radioActual);
             graphicsContext.fill(explosionActual);
         } else {

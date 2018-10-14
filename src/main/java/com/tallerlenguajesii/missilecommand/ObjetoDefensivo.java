@@ -6,7 +6,7 @@ public abstract class ObjetoDefensivo implements ElementoJuego {
 
     protected final Point2D.Double coordenadas;
 
-    protected boolean destruida = false;
+    private boolean destruida = false;
 
     public ObjetoDefensivo(Point2D.Double coordenadas) {
         this.coordenadas = coordenadas;
@@ -16,7 +16,7 @@ public abstract class ObjetoDefensivo implements ElementoJuego {
         return coordenadas;
     }
 
-    public boolean estaDestruida() {
+    public boolean estaDestruido() {
         return destruida;
     }
 
@@ -24,7 +24,7 @@ public abstract class ObjetoDefensivo implements ElementoJuego {
         this.destruida = destruida;
     }
 
-    public abstract void reset();
+    public abstract void reiniciar();
 
     public abstract TipoObjetoDefensivo getTipo();
 }

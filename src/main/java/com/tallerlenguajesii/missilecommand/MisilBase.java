@@ -60,7 +60,7 @@ public class MisilBase extends ObjetoDefensivo {
     }
 
     public void dibujar(Graphics2D graphicsContext) {
-        if (!estaDestruida()) {
+        if (!estaDestruido()) {
             graphicsContext.setPaint(Color.WHITE);
             graphicsContext.fill(new Polygon(xCoordenadas, yCoordenadas, 3));
         }
@@ -78,9 +78,9 @@ public class MisilBase extends ObjetoDefensivo {
         setDestruida(true);
     }
 
-    public void reset() {
-        destruida = false;
-        cantidadMisiles = MISILES_INICIALES;
+    public void reiniciar() {
+        this.setDestruida(false);
+        this.cantidadMisiles = MISILES_INICIALES;
     }
 
     public TipoObjetoDefensivo getTipo() {

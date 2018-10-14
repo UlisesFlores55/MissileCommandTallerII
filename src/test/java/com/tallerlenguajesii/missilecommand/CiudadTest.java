@@ -11,13 +11,13 @@ public class CiudadTest {
     private Ciudad ciudad;
 
     @Before
-    public void setup() {
+    public void configuracionTest() {
         ciudad = new Ciudad(new Point2D.Double(20, 300));
     }
 
     @Test
     public void debeIniciarSinDestruirse() {
-        assertFalse(ciudad.estaDestruida());
+        assertFalse(ciudad.estaDestruido());
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -27,9 +27,9 @@ public class CiudadTest {
 
     @Test
     public void debeDestruirCiudad() {
-        assertFalse(ciudad.estaDestruida());
+        assertFalse(ciudad.estaDestruido());
         ciudad.destruir();
-        assertTrue(ciudad.estaDestruida());
+        assertTrue(ciudad.estaDestruido());
     }
 
     @Test

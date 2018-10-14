@@ -6,7 +6,6 @@ import java.util.List;
 public class GeneradorArmasEnemigas {
 
     private final Random generadorNumerosRandom = new Random();
-
     private final List<ObjetoDefensivo> objetivos;
     private final CampoDeJuego campoDeJuego;
 

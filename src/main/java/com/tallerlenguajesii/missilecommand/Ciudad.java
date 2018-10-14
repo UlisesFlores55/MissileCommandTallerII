@@ -10,10 +10,8 @@ import java.awt.geom.Rectangle2D;
 public class Ciudad extends ObjetoDefensivo {
 
     private final Logger logger = Logger.getLogger(CampoDeJuego.class);
-
     private static final int CIUDAD_PESO = 20;
     private static final int CIUDAD_ALTURA = 20;
-
     private final TipoObjetoDefensivo tipo = TipoObjetoDefensivo.CIUDAD;
     private final Point2D.Double coordenadasIzquierdaSuperior;
     private final Rectangle limites;
@@ -30,7 +28,7 @@ public class Ciudad extends ObjetoDefensivo {
     }
 
     public void dibujar(Graphics2D graphicsContext) {
-        if (!estaDestruida()) {
+        if (!estaDestruido()) {
             graphicsContext.setPaint(Color.DARK_GRAY);
             graphicsContext.fill(new Rectangle2D.Double(coordenadasIzquierdaSuperior.getX(), coordenadasIzquierdaSuperior.getY(), CIUDAD_PESO, CIUDAD_ALTURA));
         }
@@ -48,8 +46,8 @@ public class Ciudad extends ObjetoDefensivo {
         setDestruida(true);
     }
 
-    public void reset() {
-        destruida = false;
+    public void reiniciar() {
+        this.setDestruida(false);
     }
 
     public TipoObjetoDefensivo getTipo() {

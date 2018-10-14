@@ -10,10 +10,9 @@ import java.awt.*;
 public class ControlExplosion {
 
     private final Logger logger = Logger.getLogger(ControlExplosion.class);
-
-    protected List<Explosion> explosiones = new ArrayList<Explosion>();
-    protected List<Misil> misiles;
-    protected List<ObjetoDefensivo> objetoDefensivo;
+    private List<Explosion> explosiones = new ArrayList<Explosion>();
+    private List<Misil> misiles;
+    private List<ObjetoDefensivo> objetoDefensivo;
     private List<Misil> misilesDestruidos = new ArrayList<Misil>();
 
     public ControlExplosion(List<Misil> misiles, List<ObjetoDefensivo> objetoDefensivo) {
@@ -75,7 +74,7 @@ public class ControlExplosion {
             }
 
             for (ObjetoDefensivo objetoDefensivo : objetoDefensivo) {
-                if (!objetoDefensivo.estaDestruida() && limitesDeExplosion.intersects(objetoDefensivo.getLimites())) {
+                if (!objetoDefensivo.estaDestruido() && limitesDeExplosion.intersects(objetoDefensivo.getLimites())) {
                     objetoDefensivo.destruir();
                 }
             }
@@ -94,7 +93,7 @@ public class ControlExplosion {
         if (logger.isDebugEnabled()) {
             logger.debug("Misil exploto en coordenadas: " + misil.getCoordenadasActuales());
         }
-        if(misil.getColorDelRastro().equals(Color.RED) && misil.getCoordenadasActuales().getY() != 308.0) {
+        if(misil.getColorDelRastro().equals(Color.RED) && misil.getCoordenadasActuales().getY() != 290.0) {
             misilesDestruidos.add(misil);
         }
         Explosion explosion = new Explosion(misil.getCoordenadasActuales(), misil.getRadioGeneradoPorExplosion());
@@ -114,5 +113,29 @@ public class ControlExplosion {
 
     public void setMisilesDestruidos(List<Misil> misilesDestruidos) {
         this.misilesDestruidos = misilesDestruidos;
+    }
+
+    public List<Misil> getMisiles() {
+        return misiles;
+    }
+
+    public void setMisiles(List<Misil> misiles) {
+        this.misiles = misiles;
+    }
+
+    public List<ObjetoDefensivo> getObjetoDefensivo() {
+        return objetoDefensivo;
+    }
+
+    public void setObjetoDefensivo(List<ObjetoDefensivo> objetoDefensivo) {
+        this.objetoDefensivo = objetoDefensivo;
+    }
+
+    public List<Explosion> getExplosiones() {
+        return explosiones;
+    }
+
+    public void setExplosiones(List<Explosion> explosiones) {
+        this.explosiones = explosiones;
     }
 }

@@ -1,6 +1,5 @@
 package com.tallerlenguajesii.missilecommand;
 
-import org.apache.log4j.Logger;
 import taller2.grafico.Dibujable;
 import taller2.grafico.InformacionDibujable;
 
@@ -17,17 +16,12 @@ import java.util.List;
 
 public class CampoDeJuego extends JPanel implements Dibujable {
 
-    private final Logger logger = Logger.getLogger(CampoDeJuego.class);
-
     private static final int CANT_CIUDADES = 6;
     private static final int BASES_CON_MISILES = 3;
-
-    private static final int[] COORDENADAS_CIUDAD_X = new int[]{60, 100, 140, 240, 280, 320};
-    private static final int[] COORDENADAS_BASE_MISILES_X = new int[]{15, 185, 355};
-
+    private static final int[] COORDENADAS_CIUDAD_X = new int[]{100, 170, 240, 400, 480, 560};
+    private static final int[] COORDENADAS_BASE_MISILES_X = new int[]{20, 320, 650};
     private List<ObjetoDefensivo> objetoDefensivos = new ArrayList<ObjetoDefensivo>(CANT_CIUDADES + BASES_CON_MISILES);
     private List<MisilBase> misilBases = new ArrayList<MisilBase>(BASES_CON_MISILES);
-
     private ControladorJuego controladorJuego;
 
     // Setea el campo de juego
@@ -58,7 +52,7 @@ public class CampoDeJuego extends JPanel implements Dibujable {
         construirAreaDefensiva(getParent().getHeight());
         dibujarBase(graphics2D, getParent().getHeight(), getParent().getWidth());
         dibujarObjetosDefensivos(graphics2D);
-        controladorJuego.pintar(graphics2D);
+        controladorJuego.dibujar(graphics2D);
     }
 
     private void dibujarObjetosDefensivos(Graphics2D graphics2D) {
@@ -103,19 +97,19 @@ public class CampoDeJuego extends JPanel implements Dibujable {
             switch (tecla) {
                 case 'a':
                 case 'A':
-                    if (!misilBases.get(0).estaDestruida()) {
+                    if (!misilBases.get(0).estaDestruido()) {
                         controladorJuego.dispararMisil(misilBases.get(0), mouseAdapter.getMouseCoordenadas());
                     }
                     break;
                 case 's':
                 case 'S':
-                    if (!misilBases.get(1).estaDestruida()) {
+                    if (!misilBases.get(1).estaDestruido()) {
                         controladorJuego.dispararMisil(misilBases.get(1), mouseAdapter.getMouseCoordenadas());
                     }
                     break;
                 case 'd':
                 case 'D':
-                    if (!misilBases.get(2).estaDestruida()) {
+                    if (!misilBases.get(2).estaDestruido()) {
                         controladorJuego.dispararMisil(misilBases.get(2), mouseAdapter.getMouseCoordenadas());
                     }
                     break;

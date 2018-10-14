@@ -29,11 +29,11 @@ public class MisilAntiBalistico extends Misil {
     }
 
     public void animar() {
-        if (misilEstado == MisilEstado.EN_VUELO) {
-            coordendasActuales = new Point2D.Double(coordendasActuales.getX() + xIncrementa, coordendasActuales.getY() - yDecrementa);
+        if (this.getMisilEstado() == MisilEstado.EN_VUELO) {
+            this.setCoordendasActuales(new Point2D.Double(this.getCoordenadasActuales().getX() + xIncrementa, this.getCoordenadasActuales().getY() - yDecrementa));
 
-            if (coordendasActuales.getY() <= coordendasObjetivo.getY()) {
-                misilEstado = MisilEstado.OBJETIVO_ALCANZADO;
+            if (this.getCoordenadasActuales().getY() <= coordendasObjetivo.getY()) {
+                this.setMisilEstado(MisilEstado.OBJETIVO_ALCANZADO);
             }
         }
     }

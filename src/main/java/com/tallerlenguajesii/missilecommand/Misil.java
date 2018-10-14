@@ -10,12 +10,10 @@ import java.awt.*;
 public abstract class Misil implements ElementoJuego {
 
     private final Logger logger = Logger.getLogger(Misil.class);
-
     protected final Point2D.Double coordenadasIniciales;
-    protected final int radioExplosionGenerado;
-
-    protected Point2D.Double coordendasActuales;
-    protected MisilEstado misilEstado = MisilEstado.EN_VUELO;
+    private final int radioExplosionGenerado;
+    private Point2D.Double coordendasActuales;
+    private MisilEstado misilEstado = MisilEstado.EN_VUELO;
 
     public Misil(Point2D.Double coordenadasIniciales, int radioExplosionGenerado) {
         this.coordenadasIniciales = coordenadasIniciales;
@@ -84,5 +82,22 @@ public abstract class Misil implements ElementoJuego {
     public abstract Point2D.Double getCoordendasObjetivo();
 
     protected abstract Color getColorDelRastro();
+
+    public Point2D.Double getCoordendasActuales() {
+        return coordendasActuales;
+    }
+
+    public void setCoordendasActuales(Point2D.Double coordendasActuales) {
+        this.coordendasActuales = coordendasActuales;
+    }
+
+    public MisilEstado getMisilEstado() {
+        return misilEstado;
+    }
+
+    public void setMisilEstado(MisilEstado misilEstado) {
+        this.misilEstado = misilEstado;
+    }
+
 
 }

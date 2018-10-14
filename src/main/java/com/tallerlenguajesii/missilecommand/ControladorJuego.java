@@ -28,7 +28,7 @@ public class ControladorJuego implements Runnable {
         generadorArmasEnemigas = new GeneradorArmasEnemigas(campoDeJuego, objetoDefensivo);
     }
 
-    public void pintar(Graphics2D graphics2D) {
+    public void dibujar(Graphics2D graphics2D) {
         controlExplosion.dibujarExplosiones(graphics2D);
         dibujarMisiles(graphics2D);
         graficarEstadisticas(graphics2D);
@@ -44,6 +44,7 @@ public class ControladorJuego implements Runnable {
     private int puntuacionTotal() {
         return this.puntuacionGeneral + this.puntuacionActual();
     }
+
     private int puntuacionActual() {
         return 25 * Math.toIntExact(this.controlExplosion.getMisilesDestruidos().stream().filter(Misil::estaDestruido).count());
     }
@@ -155,7 +156,7 @@ public class ControladorJuego implements Runnable {
     private boolean todasCiudadesDestruidas() {
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivo) {
             if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.CIUDAD) {
-                if (!objetoDefensivo.estaDestruida()) {
+                if (!objetoDefensivo.estaDestruido()) {
                     return false;
                 }
             }
@@ -182,7 +183,7 @@ public class ControladorJuego implements Runnable {
     private void resetElementosJuego() {
         misiles = new ArrayList<Misil>();
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivo) {
-            objetoDefensivo.reset();
+            objetoDefensivo.reiniciar();
         }
         controlExplosion = new ControlExplosion(misiles, objetoDefensivo);
     }
@@ -192,7 +193,7 @@ public class ControladorJuego implements Runnable {
         this.misiles = new ArrayList<Misil>();
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivo) {
             if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.MISIL_BASE) {
-                objetoDefensivo.reset();
+                objetoDefensivo.reiniciar();
             }
         }
         controlExplosion = new ControlExplosion(misiles, objetoDefensivo);
