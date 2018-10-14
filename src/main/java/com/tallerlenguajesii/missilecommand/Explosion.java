@@ -10,60 +10,60 @@ public class Explosion implements ElementoJuego {
 
     private final Logger logger = Logger.getLogger(Explosion.class);
 
-    private final Point2D.Double centreOfExplosion;
-    private final int maximumBlastRadius;
+    private final Point2D.Double centroDeExplosion;
+    private final int radioMaximoDeExplosion;
 
     private int radioActual = 0;
-    private boolean expanding = true;
-    private boolean complete = false;
-    private Ellipse2D.Double currentExplosion;
+    private boolean expandiendo = true;
+    private boolean completado = false;
+    private Ellipse2D.Double explosionActual;
 
-    public Explosion(Point2D.Double centreOfExplosion, int maximumBlastRadius) {
-        this.centreOfExplosion = centreOfExplosion;
-        this.maximumBlastRadius = maximumBlastRadius;
+    public Explosion(Point2D.Double centroDeExplosion, int radioMaximoDeExplosion) {
+        this.centroDeExplosion = centroDeExplosion;
+        this.radioMaximoDeExplosion = radioMaximoDeExplosion;
     }
 
     public void animar() {
-        if (!complete) {
-            if (expanding) {
+        if (!completado) {
+            if (expandiendo) {
                 radioActual++;
 
-                if (radioActual == maximumBlastRadius) {
-                    expanding = false;
+                if (radioActual == radioMaximoDeExplosion) {
+                    expandiendo = false;
                 }
             } else {
                 radioActual--;
                 if (radioActual == 0) {
-                    complete = true;
+                    completado = true;
                 }
             }
         }
     }
 
     public void dibujar(Graphics2D graphicsContext) {
-        if (!complete) {
+        if (!completado) {
             graphicsContext.setPaint(Color.GRAY);
-            currentExplosion = new Ellipse2D.Double(centreOfExplosion.getX() - radioActual / 2, centreOfExplosion.getY() - radioActual / 2, radioActual, radioActual);
-            graphicsContext.fill(currentExplosion);
+            explosionActual = new Ellipse2D.Double(centroDeExplosion.getX() - radioActual / 2, centroDeExplosion.getY() - radioActual / 2, radioActual, radioActual);
+            graphicsContext.fill(explosionActual);
         } else {
-            logger.warn("Attempting to dibujar a completed explosion");
+            logger.warn("Intentando dibujar una explosion completada");
         }
     }
 
-    public int getMaximumBlastRadius() {
-        return maximumBlastRadius;
+    public int getRadioMaximoDeExplosion() {
+        return radioMaximoDeExplosion;
     }
 
-    public boolean isComplete() {
-        return complete;
+    public boolean estaCompleta() {
+        return completado;
     }
 
     public Rectangle getLimites() {
-        return currentExplosion == null ? null : currentExplosion.getBounds();
+        return explosionActual == null ? null : explosionActual.getBounds();
     }
 
     public void destruir() {
-        complete = true;
+        completado = true;
     }
 
     public int getRadioActual() {
@@ -74,11 +74,11 @@ public class Explosion implements ElementoJuego {
         this.radioActual = radioActual;
     }
 
-    public boolean isExpanding() {
-        return expanding;
+    public boolean isExpandiendo() {
+        return expandiendo;
     }
 
-    public void setExpanding(boolean expanding) {
-        this.expanding = expanding;
+    public void setExpandiendo(boolean expandiendo) {
+        this.expandiendo = expandiendo;
     }
 }

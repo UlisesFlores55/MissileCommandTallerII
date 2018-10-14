@@ -14,14 +14,14 @@ public class Ciudad extends ObjetoDefensivo {
     private static final int CIUDAD_PESO = 20;
     private static final int CIUDAD_ALTURA = 20;
 
-    private final TipoObjetoDefensivo tipo = TipoObjetoDefensivo.CITY;
+    private final TipoObjetoDefensivo tipo = TipoObjetoDefensivo.CIUDAD;
     private final Point2D.Double coordenadasIzquierdaSuperior;
     private final Rectangle limites;
 
-    public Ciudad(Point2D.Double bottomLeftCoordinates) {
-        super(new Point2D.Double(bottomLeftCoordinates.getX() + CIUDAD_PESO / 2, bottomLeftCoordinates.getY() - CIUDAD_ALTURA / 2));
+    public Ciudad(Point2D.Double coordenadasIzquierdaInferior) {
+        super(new Point2D.Double(coordenadasIzquierdaInferior.getX() + CIUDAD_PESO / 2, coordenadasIzquierdaInferior.getY() - CIUDAD_ALTURA / 2));
 
-        coordenadasIzquierdaSuperior = new Point2D.Double(bottomLeftCoordinates.getX(), bottomLeftCoordinates.getY() - CIUDAD_ALTURA);
+        coordenadasIzquierdaSuperior = new Point2D.Double(coordenadasIzquierdaInferior.getX(), coordenadasIzquierdaInferior.getY() - CIUDAD_ALTURA);
         limites = new Rectangle((int) coordenadasIzquierdaSuperior.getX(), (int) coordenadasIzquierdaSuperior.getY(), CIUDAD_PESO, CIUDAD_ALTURA);
 
         if (logger.isDebugEnabled()) {

@@ -11,96 +11,96 @@ public class ControlExplosion {
 
     private final Logger logger = Logger.getLogger(ControlExplosion.class);
 
-    protected List<Explosion> explosions = new ArrayList<Explosion>();
-    protected List<Misil> misils;
-    protected List<ObjetoDefensivo> objetoDefensivos;
+    protected List<Explosion> explosiones = new ArrayList<Explosion>();
+    protected List<Misil> misiles;
+    protected List<ObjetoDefensivo> objetoDefensivo;
 
-    public ControlExplosion(List<Misil> misils, List<ObjetoDefensivo> objetoDefensivos) {
-        this.misils = misils;
-        this.objetoDefensivos = objetoDefensivos;
+    public ControlExplosion(List<Misil> misiles, List<ObjetoDefensivo> objetoDefensivo) {
+        this.misiles = misiles;
+        this.objetoDefensivo = objetoDefensivo;
     }
 
-    public boolean areAllExplosionComplete() {
-        for (Explosion explosion : explosions) {
-            if (!explosion.isComplete()) {
+    public boolean todasExplosionesCompletadas() {
+        for (Explosion explosion : explosiones) {
+            if (!explosion.estaCompleta()) {
                 return false;
             }
         }
         return true;
     }
 
-    public void removeCompletedExplosions() {
-        Iterator<Explosion> iterator = explosions.iterator();
+    public void eliminarExplosionesCompletadas() {
+        Iterator<Explosion> iterator = explosiones.iterator();
         while (iterator.hasNext()) {
-            if (iterator.next().isComplete()) {
+            if (iterator.next().estaCompleta()) {
                 iterator.remove();
             }
         }
     }
 
-    public void animateExplosions() {
-        for (Explosion explosion : explosions) {
-            if (!explosion.isComplete()) {
+    public void animarExplosiones() {
+        for (Explosion explosion : explosiones) {
+            if (!explosion.estaCompleta()) {
                 explosion.animar();
             }
         }
     }
 
-    public void drawExplosions(Graphics2D graphics2D) {
-        for (Explosion explosion : explosions) {
-            if (!explosion.isComplete()) {
+    public void dibujarExplosiones(Graphics2D graphics2D) {
+        for (Explosion explosion : explosiones) {
+            if (!explosion.estaCompleta()) {
                 explosion.dibujar(graphics2D);
             }
         }
     }
 
-    public void detectCollisions() {
-        List<Explosion> newExplosions = new ArrayList<Explosion>();
+    public void detectarChoques() {
+        List<Explosion> nuevasExplosiones = new ArrayList<Explosion>();
 
-        for (Explosion explosion : explosions) {
-            if (explosion.isComplete()) {
+        for (Explosion explosion : explosiones) {
+            if (explosion.estaCompleta()) {
                 continue;
             }
 
-            Rectangle explosionBounds = explosion.getLimites();
-            if (explosionBounds == null) {
+            Rectangle limitesDeExplosion = explosion.getLimites();
+            if (limitesDeExplosion == null) {
                 continue;
             }
 
-            for (Misil misil : misils) {
-                if (!misil.isDestroyed() && explosionBounds.contains(misil.getLocation())) {
-                    explodeMissile(misil, newExplosions);
+            for (Misil misil : misiles) {
+                if (!misil.estaDestruido() && limitesDeExplosion.contains(misil.getLugarActual())) {
+                    explotarMisil(misil, nuevasExplosiones);
                 }
             }
 
-            for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
-                if (!objetoDefensivo.estaDestruida() && explosionBounds.intersects(objetoDefensivo.getLimites())) {
+            for (ObjetoDefensivo objetoDefensivo : objetoDefensivo) {
+                if (!objetoDefensivo.estaDestruida() && limitesDeExplosion.intersects(objetoDefensivo.getLimites())) {
                     objetoDefensivo.destruir();
                 }
             }
         }
 
-        if (newExplosions.size() > 0) {
-            explosions.addAll(newExplosions);
+        if (nuevasExplosiones.size() > 0) {
+            explosiones.addAll(nuevasExplosiones);
         }
     }
 
-    public void explodeMissile(Misil misil) {
-        explodeMissile(misil, explosions);
+    public void explotarMisil(Misil misil) {
+        explotarMisil(misil, explosiones);
     }
 
-    private void explodeMissile(Misil misil, List<Explosion> explosionsList) {
+    private void explotarMisil(Misil misil, List<Explosion> listaExplosiones) {
         if (logger.isDebugEnabled()) {
-            logger.debug("Misil exploded at coordenadas: " + misil.getCurrentCoordinates());
+            logger.debug("Misil exploto en coordenadas: " + misil.getCoordenadasActuales());
         }
 
-        Explosion explosion = new Explosion(misil.getCurrentCoordinates(), misil.getGeneratedBlastRadius());
-        explosionsList.add(explosion);
+        Explosion explosion = new Explosion(misil.getCoordenadasActuales(), misil.getRadioGeneradoPorExplosion());
+        listaExplosiones.add(explosion);
         misil.destruir();
     }
 
-    public void completeAllExplosions() {
-        for (Explosion explosion : explosions) {
+    public void completarTodasExplosiones() {
+        for (Explosion explosion : explosiones) {
             explosion.destruir();
         }
     }

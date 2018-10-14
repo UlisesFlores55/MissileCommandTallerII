@@ -5,14 +5,7 @@ import org.apache.log4j.Logger;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-/**
- * Represents a missile against which the player must defend his cities and missile bases.
- * <code>InterContinentalBallisticMissiles</code> move from the top of the screen toward their
- * intended objetivo at the bottom of the screen.
- *
- * @author Alan Tibbetts
- * @since Feb 19, 2010, 1:54:26 PM
- */
+// Representa un misil contra el cual el jugador debe defender sus ciudades
 public class ICBM extends Misil {
 
     private final Logger logger = Logger.getLogger(ICBM.class);
@@ -21,52 +14,46 @@ public class ICBM extends Misil {
 
     private final ObjetoDefensivo objetivo;
 
-    protected double xIncrement;
-    protected double yIncrement;
+    protected double xIncrementa;
+    protected double yIncrementa;
 
-    public ICBM(int initialXCoordinate, ObjetoDefensivo objetivo, int speed) {
-        super(new Point2D.Double(initialXCoordinate, 0), RADIO_EXPLOSION);
+    public ICBM(int coordenadaInicialX, ObjetoDefensivo objetivo, int velocidad) {
+        super(new Point2D.Double(coordenadaInicialX, 0), RADIO_EXPLOSION);
         this.objetivo = objetivo;
-        calculateScreenIncrements(speed);
+        calcularIncrementosDePantalla(velocidad);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Created ICBM with intial coordenadas: " + initialCoordinates +
+            logger.debug("ICBM creado con coordenadas: " + coordenadasIniciales +
                     ", objetivo: " + objetivo.getCoordenadas() +
-                    ", x increments: " + xIncrement);
+                    ", x incrementa: " + xIncrementa);
         }
     }
 
-    private void calculateScreenIncrements(int speed) {
-        yIncrement = speed;
-        xIncrement = ((objetivo.getCoordenadas().getX() - this.initialCoordinates.getX()) / 328) * speed;
+    private void calcularIncrementosDePantalla(int velocidad) {
+        yIncrementa = velocidad;
+        xIncrementa = ((objetivo.getCoordenadas().getX() - this.coordenadasIniciales.getX()) / 328) * velocidad;
     }
 
-    /**
-     * Move this ICBM one step closer to the bottom of the game area.
-     */
+    // Mueve el ICBM cada vez mas cerca al fondo de la pantalla donde se encuentran las ciudades
     public void animar() {
-        if (misilEstado == MisilEstado.IN_FLIGHT) {
-            currentCoordinates = new Point2D.Double(currentCoordinates.getX() + xIncrement, currentCoordinates.getY() + yIncrement);
+        if (misilEstado == MisilEstado.EN_VUELO) {
+            coordendasActuales = new Point2D.Double(coordendasActuales.getX() + xIncrementa, coordendasActuales.getY() + yIncrementa);
 
-            if (currentCoordinates.getY() >= 308) {
-                misilEstado = MisilEstado.REACHED_TARGET;
+            if (coordendasActuales.getY() >= 308) {
+                misilEstado = MisilEstado.OBJETIVO_ALCANZADO;
             }
         }
     }
 
-    /**
-     * @return  the coordenadas of this ICBM's objetivo.
-     */
+    // Devuelve las coordenadas del objetivo del ICBM
     @Override
-    public Point2D.Double getTargetCoordinates() {
+    public Point2D.Double getCoordendasObjetivo() {
         return objetivo.getCoordenadas();
     }
 
-     /**
-     * @return  the colour of the trail left by this ICBM as it flies toward its objetivo.
-     */
+     // El color del rastro del misil
     @Override
-    protected Color getTrailColor() {
+    protected Color getColorDelRastro() {
         return Color.RED;
     }
 }

@@ -30,11 +30,11 @@ public class ControlExplosionTest {
 
     @Test
     public void despuesDeInstanciar() {
-        assertEquals(0, mockExplosionController.misils.size());
-        assertEquals(1, mockExplosionController.objetoDefensivos.size());
-        assertEquals(0, mockExplosionController.explosions.size());
+        assertEquals(0, mockExplosionController.misiles.size());
+        assertEquals(1, mockExplosionController.objetoDefensivo.size());
+        assertEquals(0, mockExplosionController.explosiones.size());
 
-        assertTrue(mockExplosionController.areAllExplosionComplete());
+        assertTrue(mockExplosionController.todasExplosionesCompletadas());
     }
 
     @Test
@@ -43,72 +43,72 @@ public class ControlExplosionTest {
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
         this.misils.add(icbm);
 
-        assertEquals(1, mockExplosionController.misils.size());
+        assertEquals(1, mockExplosionController.misiles.size());
     }
 
     @Test
     public void debeExplotarMisil() {
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
-        icbm.currentCoordinates.setLocation(new Point2D.Double(150, 212.5));
+        icbm.coordendasActuales.setLocation(new Point2D.Double(150, 212.5));
         misils.add(icbm);
 
-        assertEquals(0, mockExplosionController.explosions.size());
-        assertFalse(icbm.isDestroyed());
+        assertEquals(0, mockExplosionController.explosiones.size());
+        assertFalse(icbm.estaDestruido());
 
-        mockExplosionController.explodeMissile(icbm);
-        assertEquals(1, mockExplosionController.explosions.size());
-        assertTrue(icbm.isDestroyed());
+        mockExplosionController.explotarMisil(icbm);
+        assertEquals(1, mockExplosionController.explosiones.size());
+        assertTrue(icbm.estaDestruido());
     }
 
     @Test
     public void debeExplotarCuandoCoisionaContraElMisil() {
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
-        icbm.currentCoordinates.setLocation(new Point2D.Double(150, 212.5));
+        icbm.coordendasActuales.setLocation(new Point2D.Double(150, 212.5));
         misils.add(icbm);
 
         MisilAntiBalistico abm = new MisilAntiBalistico(new Point2D.Double(185, DEFENSIVE_OBJECT_Y_COORDINATE), new Point2D.Double(148, 210), 3);
-        abm.currentCoordinates.setLocation(abm.getTargetCoordinates());
+        abm.coordendasActuales.setLocation(abm.getCoordendasObjetivo());
         misils.add(abm);
 
-        mockExplosionController.explodeMissile(abm);
-        assertEquals(1, mockExplosionController.explosions.size());
+        mockExplosionController.explotarMisil(abm);
+        assertEquals(1, mockExplosionController.explosiones.size());
 
         for (int i = 0; i < 20; i++) {
-            mockExplosionController.animateExplosions();
-            mockExplosionController.drawExplosions(mockGraphicsContext);
+            mockExplosionController.animarExplosiones();
+            mockExplosionController.dibujarExplosiones(mockGraphicsContext);
         }
 
-        assertFalse(mockExplosionController.areAllExplosionComplete());
+        assertFalse(mockExplosionController.todasExplosionesCompletadas());
 
-        mockExplosionController.detectCollisions();
-        assertTrue(icbm.isDestroyed());
-        assertEquals(2, mockExplosionController.explosions.size());
+        mockExplosionController.detectarChoques();
+        assertTrue(icbm.estaDestruido());
+        assertEquals(2, mockExplosionController.explosiones.size());
     }
 
     @Test
     public void removalOfCompletedExplosions() {
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
-        icbm.currentCoordinates.setLocation(new Point2D.Double(150, 212.5));
+        icbm.coordendasActuales.setLocation(new Point2D.Double(150, 212.5));
         misils.add(icbm);
 
         MisilAntiBalistico abm = new MisilAntiBalistico(new Point2D.Double(185, DEFENSIVE_OBJECT_Y_COORDINATE), new Point2D.Double(148, 210), 3);
-        abm.currentCoordinates.setLocation(abm.getTargetCoordinates());
+        abm.coordendasActuales.setLocation(abm.getCoordendasObjetivo());
         misils.add(abm);
 
-        mockExplosionController.explodeMissile(abm);
-        mockExplosionController.explodeMissile(icbm);
+        mockExplosionController.explotarMisil(abm);
+        mockExplosionController.explotarMisil(icbm);
 
-        assertEquals(2, mockExplosionController.explosions.size());
+        assertEquals(2, mockExplosionController.explosiones.size());
 
         for (int i = 0; i < 80; i++) {
-            mockExplosionController.animateExplosions();
-            mockExplosionController.drawExplosions(mockGraphicsContext);
+            mockExplosionController.animarExplosiones();
+            mockExplosionController.dibujarExplosiones(mockGraphicsContext);
         }
 
-        assertEquals(2, mockExplosionController.explosions.size());
+        assertEquals(2, mockExplosionController.explosiones.size());
 
-        mockExplosionController.removeCompletedExplosions();
-        assertEquals(0, mockExplosionController.explosions.size());
+        mockExplosionController.eliminarExplosionesCompletadas();
+        assertEquals(0, mockExplosionController.explosiones.size());
     }
 
 }

@@ -48,9 +48,9 @@ public class GeneradorArmasEnemigasTest {
     public void debeCrearICBM() {
         when(this.container.getWidth()).thenReturn(400);
         when(this.area.getParent()).thenReturn(this.container);
-        ICBM icbm = this.armasEnemigas.createMissile(1);
+        ICBM icbm = this.armasEnemigas.crearMisil(1);
         assertNotNull(icbm);
-        assertTrue(icbm.getInitialCoordinates().getX() >= 0);
-        assertTrue(icbm.getInitialCoordinates().getX() < area.getParent().getWidth());
+        assertTrue(icbm.getCoordenadasIniciales().getX() >= 0);
+        assertTrue(icbm.getCoordenadasIniciales().getX() < area.getParent().getWidth());
     }
 }

@@ -26,9 +26,9 @@ public class MisilBaseTest {
     public void dispararMisil() {
         assertEquals(20, misilBase.getCantidadMisiles());
 
-        MisilAntiBalistico abm = misilBase.fireMissile(coordenadasObjetivo);
+        MisilAntiBalistico abm = misilBase.dispararMisil(coordenadasObjetivo);
         assertEquals(19, misilBase.getCantidadMisiles());
-        assertEquals(misilBase.getCoordenadas(), abm.getCurrentCoordinates());
+        assertEquals(misilBase.getCoordenadas(), abm.getCoordenadasActuales());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class MisilBaseTest {
 
         misilBase.setCantidadMisiles(0);
 
-        MisilAntiBalistico abm = misilBase.fireMissile(coordenadasObjetivo);
+        MisilAntiBalistico abm = misilBase.dispararMisil(coordenadasObjetivo);
         assertNull(abm);
         assertEquals(0, misilBase.getCantidadMisiles());
     }

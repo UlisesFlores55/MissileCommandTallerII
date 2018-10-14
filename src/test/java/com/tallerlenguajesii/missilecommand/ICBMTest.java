@@ -23,18 +23,18 @@ public class ICBMTest {
 
     @Test
     public void debeCrearMisil() {
-        assertFalse(icbm.hasReachedTarget());
-        assertEquals(Color.RED, icbm.getTrailColor());
-        assertEquals(15, icbm.getGeneratedBlastRadius());
+        assertFalse(icbm.alcanzoObjetivo());
+        assertEquals(Color.RED, icbm.getColorDelRastro());
+        assertEquals(15, icbm.getRadioGeneradoPorExplosion());
     }
 
 
     @Test
     public void debeMoverElMisil() {
-        Point2D.Double initialCoordinates = icbm.getInitialCoordinates();
+        Point2D.Double initialCoordinates = icbm.getCoordenadasIniciales();
         icbm.animar();
-        assertTrue(initialCoordinates.getX() < icbm.getCurrentCoordinates().getX());
-        assertTrue(initialCoordinates.getY() < icbm.getCurrentCoordinates().getY());
+        assertTrue(initialCoordinates.getX() < icbm.getCoordenadasActuales().getX());
+        assertTrue(initialCoordinates.getY() < icbm.getCoordenadasActuales().getY());
     }
 
     @Test
@@ -42,14 +42,14 @@ public class ICBMTest {
         for (int i = 0; i< targetCiudad.coordenadas.getY(); i++) {
             icbm.animar();
         }
-        assertTrue(icbm.hasReachedTarget());
+        assertTrue(icbm.alcanzoObjetivo());
     }
 
     @Test
     public void destruir() {
-        assertFalse(icbm.isDestroyed());
+        assertFalse(icbm.estaDestruido());
         icbm.destruir();
-        assertTrue(icbm.isDestroyed());
+        assertTrue(icbm.estaDestruido());
     }
 
     @Test (expected=UnsupportedOperationException.class)
