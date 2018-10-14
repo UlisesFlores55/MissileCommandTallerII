@@ -11,17 +11,17 @@ public class ControlExplosion {
 
     private final Logger logger = Logger.getLogger(ControlExplosion.class);
 
-    protected List<Explosion> explosions = new ArrayList<Explosion>();
-    protected List<Misil> misils;
+    protected List<Explosion> explosiones = new ArrayList<Explosion>();
+    protected List<Misil> misiles;
     protected List<ObjetoDefensivo> objetoDefensivos;
 
-    public ControlExplosion(List<Misil> misils, List<ObjetoDefensivo> objetoDefensivos) {
-        this.misils = misils;
+    public ControlExplosion(List<Misil> misiles, List<ObjetoDefensivo> objetoDefensivos) {
+        this.misiles = misiles;
         this.objetoDefensivos = objetoDefensivos;
     }
 
-    public boolean areAllExplosionComplete() {
-        for (Explosion explosion : explosions) {
+    public boolean estanTodasLasExplosionesCompletas() {
+        for (Explosion explosion : explosiones) {
             if (!explosion.isComplete()) {
                 return false;
             }
@@ -29,8 +29,8 @@ public class ControlExplosion {
         return true;
     }
 
-    public void removeCompletedExplosions() {
-        Iterator<Explosion> iterator = explosions.iterator();
+    public void eliminarExplosionesCompletadas() {
+        Iterator<Explosion> iterator = explosiones.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().isComplete()) {
                 iterator.remove();
@@ -38,8 +38,8 @@ public class ControlExplosion {
         }
     }
 
-    public void animateExplosions() {
-        for (Explosion explosion : explosions) {
+    public void animarExplosiones() {
+        for (Explosion explosion : explosiones) {
             if (!explosion.isComplete()) {
                 explosion.animar();
             }
@@ -47,17 +47,17 @@ public class ControlExplosion {
     }
 
     public void drawExplosions(Graphics2D graphics2D) {
-        for (Explosion explosion : explosions) {
+        for (Explosion explosion : explosiones) {
             if (!explosion.isComplete()) {
                 explosion.dibujar(graphics2D);
             }
         }
     }
 
-    public void detectCollisions() {
+    public void detectarChoque() {
         List<Explosion> newExplosions = new ArrayList<Explosion>();
 
-        for (Explosion explosion : explosions) {
+        for (Explosion explosion : explosiones) {
             if (explosion.isComplete()) {
                 continue;
             }
@@ -67,8 +67,8 @@ public class ControlExplosion {
                 continue;
             }
 
-            for (Misil misil : misils) {
-                if (!misil.isDestroyed() && explosionBounds.contains(misil.getLocation())) {
+            for (Misil misil : misiles) {
+                if (!misil.estaDestruido() && explosionBounds.contains(misil.getLocation())) {
                     explodeMissile(misil, newExplosions);
                 }
             }
@@ -81,12 +81,12 @@ public class ControlExplosion {
         }
 
         if (newExplosions.size() > 0) {
-            explosions.addAll(newExplosions);
+            explosiones.addAll(newExplosions);
         }
     }
 
     public void explodeMissile(Misil misil) {
-        explodeMissile(misil, explosions);
+        explodeMissile(misil, explosiones);
     }
 
     private void explodeMissile(Misil misil, List<Explosion> explosionsList) {
@@ -99,8 +99,8 @@ public class ControlExplosion {
         misil.destruir();
     }
 
-    public void completeAllExplosions() {
-        for (Explosion explosion : explosions) {
+    public void completarExplosiones() {
+        for (Explosion explosion : explosiones) {
             explosion.destruir();
         }
     }

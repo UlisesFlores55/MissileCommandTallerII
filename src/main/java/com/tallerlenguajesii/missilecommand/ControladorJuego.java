@@ -15,17 +15,17 @@ public class ControladorJuego implements Runnable {
     private final CampoDeJuego campoDeJuego;
 
     private List<ObjetoDefensivo> objetoDefensivos;
-    protected List<Misil> misils = new ArrayList<Misil>();
+    protected List<Misil> misiles = new ArrayList<Misil>();
 
     private ControlExplosion controlExplosion;
     private GeneradorArmasEnemigas generadorArmasEnemigas;
-    private boolean gameInProgress = false;
+    private boolean juegoEnProgreso = false;
 
     public ControladorJuego(CampoDeJuego campoDeJuego, List<ObjetoDefensivo> objetoDefensivos) {
         this.campoDeJuego = campoDeJuego;
         this.objetoDefensivos = objetoDefensivos;
 
-        controlExplosion = new ControlExplosion(misils, objetoDefensivos);
+        controlExplosion = new ControlExplosion(misiles, objetoDefensivos);
         generadorArmasEnemigas = new GeneradorArmasEnemigas(campoDeJuego, objetoDefensivos);
     }
 
@@ -35,33 +35,33 @@ public class ControladorJuego implements Runnable {
     }
 
     private void drawMissiles(Graphics2D graphics2D) {
-        for (Misil misil : misils) {
-            if (misil.hasReachedTarget() && !misil.isDestroyed()) {
+        for (Misil misil : misiles) {
+            if (misil.hasReachedTarget() && !misil.estaDestruido()) {
                 controlExplosion.explodeMissile(misil);
-            } else if (!misil.isDestroyed()) {
+            } else if (!misil.estaDestruido()) {
                 misil.dibujar(graphics2D);
             }
         }
     }
 
-    private boolean allMissilesDestroyed() {
-        if (misils.size() == 0) {
+    private boolean misilesDestruidos() {
+        if (misiles.size() == 0) {
             return false;
         }
 
-        for (Misil misil : misils) {
-            if (!misil.isDestroyed()) {
+        for (Misil misil : misiles) {
+            if (!misil.estaDestruido()) {
                 return false;
             }
         }
         return true;
     }
 
-    public void fireMissile(MisilBase misilBase, Point2D.Double mouseCoordinates) {
-        if (!allMissilesDestroyed()) {
-            MisilAntiBalistico missile = misilBase.fireMissile(mouseCoordinates);
-            if (missile != null) {
-                misils.add(missile);
+    public void dispararMisil(MisilBase misilBase, Point2D.Double mouseCoordinates) {
+        if (!misilesDestruidos()) {
+            MisilAntiBalistico misilAB = misilBase.fireMissile(mouseCoordinates);
+            if (misilAB != null) {
+                misiles.add(misilAB);
             }
         }
     }
@@ -69,77 +69,78 @@ public class ControladorJuego implements Runnable {
     public void run() {
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Executing the ICBM Thread");
+            logger.debug("Ejecutando el thread ICBM");
         }
 
-        gameInProgress = true;
+        juegoEnProgreso = true;
 
-        long beforeTime, timeDiff, sleep;
-        long totalTime = 0;
+        long antesDeTiempo, diferenciaDeTiempo, sleep;
+        long tiempoTotal = 0;
 
-        beforeTime = System.currentTimeMillis();
+        antesDeTiempo = System.currentTimeMillis();
 
-        int icbmSpeed = 1;
-        int maximumMissiles = 10;
+        int velocidadICBM = 1;
+        int misilesMaximos = 10;
 
         while (true) {
 
-            controlExplosion.detectCollisions();
+            controlExplosion.detectarChoque();
 
-            for (Misil misil : misils) {
-                if (!misil.isDestroyed()) {
+            for (Misil misil : misiles) {
+                if (!misil.estaDestruido()) {
                     misil.animar();
                 }
             }
 
-            controlExplosion.animateExplosions();
+            controlExplosion.animarExplosiones();
 
             campoDeJuego.repaint();
 
-            timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = DELAY - timeDiff;
-            totalTime += DELAY;
+            diferenciaDeTiempo = System.currentTimeMillis() - antesDeTiempo;
+            sleep = DELAY - diferenciaDeTiempo;
+            tiempoTotal += DELAY;
 
             if (sleep < 0)
                 sleep = 2;
             try {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {
-                System.out.println("interrupted");
+                System.out.println("interrumpido");
             }
 
-            beforeTime = System.currentTimeMillis();
+            antesDeTiempo = System.currentTimeMillis();
 
-            if (misils.size() < maximumMissiles && totalTime % 500 == 0) {
-                misils.add(generadorArmasEnemigas.createMissile(icbmSpeed));
+            if (misiles.size() < misilesMaximos && tiempoTotal % 500 == 0) {
+                misiles.add(generadorArmasEnemigas.crearMisil(velocidadICBM));
             }
 
-            controlExplosion.removeCompletedExplosions();
+            controlExplosion.eliminarExplosionesCompletadas();
 
-            if (allMissilesDestroyed() && controlExplosion.areAllExplosionComplete()) {
-                resetForNewLevel();
-                // increase difficulty...
-                icbmSpeed = icbmSpeed == 3 ? icbmSpeed : icbmSpeed + 1;
-                maximumMissiles = maximumMissiles == 30 ? maximumMissiles : maximumMissiles + 5;
+            if (misilesDestruidos() && controlExplosion.estanTodasLasExplosionesCompletas()) {
+                resetNuevoNivel();
+
+                // subir dificultad...
+                velocidadICBM = velocidadICBM == 3 ? velocidadICBM : velocidadICBM + 1;
+                misilesMaximos = misilesMaximos == 30 ? misilesMaximos : misilesMaximos + 5;
             }
 
-            if (allCitiesDestoyed()) {
-                for (Misil misil : misils) {
+            if (ciudadesDestruidas()) {
+                for (Misil misil : misiles) {
                     misil.destruir();
                 }
-                controlExplosion.completeAllExplosions();
+                controlExplosion.completarExplosiones();
                 campoDeJuego.repaint();
                 break;
             }
         }
 
-        gameInProgress = false;
+        juegoEnProgreso = false;
     }
 
 
-    private boolean allCitiesDestoyed() {
+    private boolean ciudadesDestruidas() {
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
-            if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.CITY) {
+            if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.CIUDAD) {
                 if (!objetoDefensivo.estaDestruida()) {
                     return false;
                 }
@@ -149,36 +150,36 @@ public class ControladorJuego implements Runnable {
         return true;
     }
 
-    public boolean isGameInProgress() {
-        return gameInProgress;
+    public boolean isJuegoEnProgreso() {
+        return juegoEnProgreso;
     }
 
-    public void startGame() {
-        if (gameInProgress) {
+    public void comenzarJuego() {
+        if (juegoEnProgreso) {
             return;
         }
 
-        resetGameElements();
+        resetElementosDeJuego();
 
         Thread thread = new Thread(this);
         thread.start();
     }
 
-    private void resetGameElements() {
-        misils = new ArrayList<Misil>();
+    private void resetElementosDeJuego() {
+        misiles = new ArrayList<Misil>();
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
             objetoDefensivo.reset();
         }
-        controlExplosion = new ControlExplosion(misils, objetoDefensivos);
+        controlExplosion = new ControlExplosion(misiles, objetoDefensivos);
     }
 
-    private void resetForNewLevel() {
-        misils = new ArrayList<Misil>();
+    private void resetNuevoNivel() {
+        misiles = new ArrayList<Misil>();
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
-            if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.MISSILE_BASE) {
+            if (objetoDefensivo.getTipo() == TipoObjetoDefensivo.MISIL_BASE) {
                 objetoDefensivo.reset();
             }
         }
-        controlExplosion = new ControlExplosion(misils, objetoDefensivos);
+        controlExplosion = new ControlExplosion(misiles, objetoDefensivos);
     }
 }

@@ -27,11 +27,11 @@ public class ControlExplosionTest {
     @Test
     public void despuesDeInstanciar() {
         mockExplosionController = new ControlExplosion(this.misils, this.objetoDefensivos);
-        assertEquals(0, mockExplosionController.misils.size());
+        assertEquals(0, mockExplosionController.misiles.size());
         assertEquals(1, mockExplosionController.objetoDefensivos.size());
-        assertEquals(0, mockExplosionController.explosions.size());
+        assertEquals(0, mockExplosionController.explosiones.size());
 
-        assertTrue(mockExplosionController.areAllExplosionComplete());
+        assertTrue(mockExplosionController.estanTodasLasExplosionesCompletas());
     }
 
     @Test
@@ -40,7 +40,7 @@ public class ControlExplosionTest {
         ICBM icbm = new ICBM(150, objetoDefensivos.get(0), 3);
         this.misils.add(icbm);
 
-        assertEquals(1, mockExplosionController.misils.size());
+        assertEquals(1, mockExplosionController.misiles.size());
     }
 
     @Test
@@ -50,12 +50,12 @@ public class ControlExplosionTest {
         icbm.currentCoordinates.setLocation(new Point2D.Double(150, 212.5));
         misils.add(icbm);
 
-        assertEquals(0, mockExplosionController.explosions.size());
-        assertFalse(icbm.isDestroyed());
+        assertEquals(0, mockExplosionController.explosiones.size());
+        assertFalse(icbm.estaDestruido());
 
         mockExplosionController.explodeMissile(icbm);
-        assertEquals(1, mockExplosionController.explosions.size());
-        assertTrue(icbm.isDestroyed());
+        assertEquals(1, mockExplosionController.explosiones.size());
+        assertTrue(icbm.estaDestruido());
     }
 
     @Test
@@ -73,18 +73,18 @@ public class ControlExplosionTest {
         misils.add(abm);
 
         mockExplosionController.explodeMissile(abm);
-        assertEquals(1, mockExplosionController.explosions.size());
+        assertEquals(1, mockExplosionController.explosiones.size());
 
         for (int i = 0; i < 20; i++) {
-            mockExplosionController.animateExplosions();
+            mockExplosionController.animarExplosiones();
             mockExplosionController.drawExplosions(mockGraphicsContext);
         }
 
-        assertFalse(mockExplosionController.areAllExplosionComplete());
+        assertFalse(mockExplosionController.estanTodasLasExplosionesCompletas());
 
-        mockExplosionController.detectCollisions();
-        assertTrue(icbm.isDestroyed());
-        assertEquals(2, mockExplosionController.explosions.size());
+        mockExplosionController.detectarChoque();
+        assertTrue(icbm.estaDestruido());
+        assertEquals(2, mockExplosionController.explosiones.size());
     }
 
     @Test
@@ -103,17 +103,17 @@ public class ControlExplosionTest {
         mockExplosionController.explodeMissile(abm);
         mockExplosionController.explodeMissile(icbm);
 
-        assertEquals(2, mockExplosionController.explosions.size());
+        assertEquals(2, mockExplosionController.explosiones.size());
 
         for (int i = 0; i < 80; i++) {
-            mockExplosionController.animateExplosions();
+            mockExplosionController.animarExplosiones();
             mockExplosionController.drawExplosions(mockGraphicsContext);
         }
 
-        assertEquals(2, mockExplosionController.explosions.size());
+        assertEquals(2, mockExplosionController.explosiones.size());
 
-        mockExplosionController.removeCompletedExplosions();
-        assertEquals(0, mockExplosionController.explosions.size());
+        mockExplosionController.eliminarExplosionesCompletadas();
+        assertEquals(0, mockExplosionController.explosiones.size());
     }
 
 }

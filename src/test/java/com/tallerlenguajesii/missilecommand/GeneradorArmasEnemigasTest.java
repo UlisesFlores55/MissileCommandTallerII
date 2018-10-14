@@ -47,7 +47,7 @@ public class GeneradorArmasEnemigasTest {
 
     @Test
     public void createIcbm() {
-        ICBM icbm = enemyWeaponsFactory.createMissile(1);
+        ICBM icbm = enemyWeaponsFactory.crearMisil(1);
         assertNotNull(icbm);
         assertTrue(icbm.getInitialCoordinates().getX() >= 0);
         assertTrue(icbm.getInitialCoordinates().getX() < gameArea.getParent().getWidth());

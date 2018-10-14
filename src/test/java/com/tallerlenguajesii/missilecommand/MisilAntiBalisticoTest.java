@@ -47,9 +47,9 @@ public class MisilAntiBalisticoTest {
 
     @Test
     public void debeDestruirse() {
-        assertFalse(abm.isDestroyed());
+        assertFalse(abm.estaDestruido());
         abm.destruir();
-        assertTrue(abm.isDestroyed());
+        assertTrue(abm.estaDestruido());
     }
 
     @Test (expected=UnsupportedOperationException.class)

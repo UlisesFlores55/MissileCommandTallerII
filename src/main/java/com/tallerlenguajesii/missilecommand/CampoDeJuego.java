@@ -15,6 +15,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+// Clase que establece todos los parametros del campo de juego, asi como sus limites, misiles y ciudades
 public class CampoDeJuego extends JPanel implements Dibujable {
 
     private final Logger logger = Logger.getLogger(CampoDeJuego.class);
@@ -22,27 +23,27 @@ public class CampoDeJuego extends JPanel implements Dibujable {
     private static final int CANT_CIUDADES = 6;
     private static final int BASES_CON_MISILES = 3;
 
-    private static final int[] CITY_X_COORDINATES = new int[]{60, 100, 140, 240, 280, 320};
-    private static final int[] MISSILE_BASE_X_COORDINATES = new int[]{15, 185, 355};
+    private static final int[] COORDENADAS_X_CIUDAD = new int[]{60, 100, 140, 240, 280, 320};
+    private static final int[] COORDENADAS_X_BASE_MISILES = new int[]{15, 185, 355};
 
     private List<ObjetoDefensivo> objetoDefensivos = new ArrayList<ObjetoDefensivo>(CANT_CIUDADES + BASES_CON_MISILES);
     private List<MisilBase> misilBases = new ArrayList<MisilBase>(BASES_CON_MISILES);
 
     private ControladorJuego controladorJuego;
 
+    // Setea el campo de juego
     public CampoDeJuego() {
         setFocusable(true);
         setBackground(Color.BLACK);
 
         controladorJuego = new ControladorJuego(this, objetoDefensivos);
 
-        MissileCommandMouseAdapter missileCommandMouseAdapter = new MissileCommandMouseAdapter();
-        addMouseListener(missileCommandMouseAdapter);
-        addMouseMotionListener(missileCommandMouseAdapter);
-        
-        addKeyListener(new MissileCommandKeyAdapter(missileCommandMouseAdapter));
-    }
+        MissileCommandAdaptadorMouse missileCommandAdaptadorMouse = new MissileCommandAdaptadorMouse();
+        addMouseListener(missileCommandAdaptadorMouse);
+        addMouseMotionListener(missileCommandAdaptadorMouse);
 
+        addKeyListener(new MissileCommandAdaptadorTeclado(missileCommandAdaptadorMouse));
+    }
 
     public InformacionDibujable getInformacionDibujable() {
         return new InformacionDibujable(255, 345, 'H');
@@ -52,32 +53,32 @@ public class CampoDeJuego extends JPanel implements Dibujable {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D graphics2D = (Graphics2D) g;
-        constructDefensiveArea(getParent().getHeight());
-        drawLand(graphics2D, getParent().getHeight(), getParent().getWidth());
-        drawDefensiveObjects(graphics2D);
+        construirAreaDefensiva(getParent().getHeight());
+        dibujarBase(graphics2D, getParent().getHeight(), getParent().getWidth());
+        dibujarObjetosDefensivos(graphics2D);
         controladorJuego.paint(graphics2D);
     }
 
-    private void drawDefensiveObjects(Graphics2D graphics2D) {
+    private void dibujarObjetosDefensivos(Graphics2D graphics2D) {
         for (ObjetoDefensivo objetoDefensivo : objetoDefensivos) {
             objetoDefensivo.dibujar(graphics2D);
         }
     }
 
-    private void drawLand(Graphics2D graphics2D, int parentHeight, int parentWidth) {
+    private void dibujarBase(Graphics2D graphics2D, int altura, int ancho) {
         graphics2D.setPaint(Color.GREEN);
-        graphics2D.fill(new Rectangle2D.Double(0, parentHeight - 5, parentWidth, 5));
+        graphics2D.fill(new Rectangle2D.Double(0, altura - 5, ancho, 5));
     }
 
-    private void constructDefensiveArea(int parentHeight) {
+    private void construirAreaDefensiva(int altura) {
         if (objetoDefensivos.size() == 0) {
-            for (int xCoordinate : CITY_X_COORDINATES) {
-                Ciudad ciudad = new Ciudad(new Point2D.Double(xCoordinate, parentHeight - 3));
+            for (int xCoordenada : COORDENADAS_X_CIUDAD) {
+                Ciudad ciudad = new Ciudad(new Point2D.Double(xCoordenada, altura - 3));
                 objetoDefensivos.add(ciudad);
             }
 
-            for (int xCoordinate : MISSILE_BASE_X_COORDINATES) {
-                MisilBase misilBase = new MisilBase(new Point2D.Double(xCoordinate, parentHeight - 3));
+            for (int xCoordenada : COORDENADAS_X_BASE_MISILES) {
+                MisilBase misilBase = new MisilBase(new Point2D.Double(xCoordenada, altura - 3));
                 misilBases.add(misilBase);
                 objetoDefensivos.add(misilBase);
             }
@@ -85,67 +86,67 @@ public class CampoDeJuego extends JPanel implements Dibujable {
     }
 
     //Entrada de teclado
-    private class MissileCommandKeyAdapter extends KeyAdapter {
+    private class MissileCommandAdaptadorTeclado extends KeyAdapter {
 
-        private final MissileCommandMouseAdapter mouseAdapter;
+        private final MissileCommandAdaptadorMouse mouseAdaptador;
 
-        public MissileCommandKeyAdapter(CampoDeJuego.MissileCommandMouseAdapter mouseAdapter) {
-            this.mouseAdapter = mouseAdapter;
+        public MissileCommandAdaptadorTeclado(MissileCommandAdaptadorMouse mouseAdaptador) {
+            this.mouseAdaptador = mouseAdaptador;
         }
 
         @Override
-        public void keyPressed(KeyEvent e) {
-            int key = e.getKeyCode();
+        public void teclaPresionada(KeyEvent e) {
+            int tecla = e.getKeyCode();
             MisilAntiBalistico abm = null;
-            switch (key) {
+            switch (tecla) {
                 case 'a':
                 case 'A':
                     if (!misilBases.get(0).estaDestruida()) {
-                        controladorJuego.fireMissile(misilBases.get(0), mouseAdapter.getMouseCoordinates());
+                        controladorJuego.dispararMisil(misilBases.get(0), mouseAdaptador.getCoordenadasMouse());
                     }
                     break;
                 case 's':
                 case 'S':
                     if (!misilBases.get(1).estaDestruida()) {
-                        controladorJuego.fireMissile(misilBases.get(1), mouseAdapter.getMouseCoordinates());
+                        controladorJuego.dispararMisil(misilBases.get(1), mouseAdaptador.getCoordenadasMouse());
                     }
                     break;
                 case 'd':
                 case 'D':
                     if (!misilBases.get(2).estaDestruida()) {
-                        controladorJuego.fireMissile(misilBases.get(2), mouseAdapter.getMouseCoordinates());
+                        controladorJuego.dispararMisil(misilBases.get(2), mouseAdaptador.getCoordenadasMouse());
                     }
                     break;
                 case ' ':
-                    controladorJuego.startGame();
+                    controladorJuego.comenzarJuego();
                     break;
             }
         }
     }
 
      //Entrada Mouse
-    private class MissileCommandMouseAdapter extends MouseAdapter {
+    private class MissileCommandAdaptadorMouse extends MouseAdapter {
 
-        private double mouseCoorX;
-        private double mouseCoorY;
+        private double mouseCoordenadaX;
+        private double mouseCoordenadaY;
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void mouseEntrada(MouseEvent e) {
             setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void mouseSalida(MouseEvent e) {
             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
-        public void mouseMoved(MouseEvent e) {
-            mouseCoorX = e.getPoint().getX();
-            mouseCoorY = e.getPoint().getY();
+        public void mouseDesplazado(MouseEvent e) {
+            mouseCoordenadaX = e.getPoint().getX();
+            mouseCoordenadaY = e.getPoint().getY();
         }
 
-        public Point2D.Double getMouseCoordinates() {
-            return new Point2D.Double(mouseCoorX, mouseCoorY);
+        public Point2D.Double getCoordenadasMouse() {
+            return new Point2D.Double(mouseCoordenadaX, mouseCoordenadaY);
         }
     }
 }

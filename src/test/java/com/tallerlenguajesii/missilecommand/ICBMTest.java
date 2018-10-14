@@ -47,9 +47,9 @@ public class ICBMTest {
 
     @Test
     public void destruir() {
-        assertFalse(icbm.isDestroyed());
+        assertFalse(icbm.estaDestruido());
         icbm.destruir();
-        assertTrue(icbm.isDestroyed());
+        assertTrue(icbm.estaDestruido());
     }
 
     @Test (expected=UnsupportedOperationException.class)

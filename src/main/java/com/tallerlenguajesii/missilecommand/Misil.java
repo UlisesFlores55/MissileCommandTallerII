@@ -14,7 +14,7 @@ public abstract class Misil implements ElementoJuego {
     protected final int generatedBlastRadius;
 
     protected Point2D.Double currentCoordinates;
-    protected MisilEstado misilEstado = MisilEstado.IN_FLIGHT;
+    protected MisilEstado misilEstado = MisilEstado.EN_VUELO;
 
     public Misil(Point2D.Double initialCoordinates, int generatedBlastRadius) {
         this.initialCoordinates = initialCoordinates;
@@ -24,13 +24,13 @@ public abstract class Misil implements ElementoJuego {
 
     public void dibujar(Graphics2D graphics2D) {
         switch (misilEstado) {
-            case IN_FLIGHT:
+            case EN_VUELO:
                 drawInFlight(graphics2D);
                 break;
-            case REACHED_TARGET:
+            case ALCANZO_OBJETIVO:
                 logger.warn("Attempting to dibujar a missile that has already reached its target.");
                 break;
-            case DESTROYED:
+            case DESTRUIDO:
                 logger.warn("Attempting to dibujar a missile that has already been destruida.");
                 break;
             default:
@@ -45,15 +45,15 @@ public abstract class Misil implements ElementoJuego {
     }
 
     public boolean hasReachedTarget() {
-        return misilEstado == MisilEstado.REACHED_TARGET;
+        return misilEstado == MisilEstado.ALCANZO_OBJETIVO;
     }
 
-    public boolean isDestroyed() {
-        return misilEstado == MisilEstado.DESTROYED;
+    public boolean estaDestruido() {
+        return misilEstado == MisilEstado.DESTRUIDO;
     }
 
     public void destruir() {
-        misilEstado = MisilEstado.DESTROYED;
+        misilEstado = MisilEstado.DESTRUIDO;
     }
 
     public int getGeneratedBlastRadius() {

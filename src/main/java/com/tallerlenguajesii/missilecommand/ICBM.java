@@ -45,11 +45,11 @@ public class ICBM extends Misil {
      * Move this ICBM one step closer to the bottom of the game area.
      */
     public void animar() {
-        if (misilEstado == MisilEstado.IN_FLIGHT) {
+        if (misilEstado == MisilEstado.EN_VUELO) {
             currentCoordinates = new Point2D.Double(currentCoordinates.getX() + xIncrement, currentCoordinates.getY() + yIncrement);
 
             if (currentCoordinates.getY() >= 308) {
-                misilEstado = MisilEstado.REACHED_TARGET;
+                misilEstado = MisilEstado.ALCANZO_OBJETIVO;
             }
         }
     }

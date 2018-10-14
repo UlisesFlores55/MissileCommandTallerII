@@ -28,11 +28,11 @@ public class MisilAntiBalistico extends Misil {
     }
 
     public void animar() {
-        if (misilEstado == MisilEstado.IN_FLIGHT) {
+        if (misilEstado == MisilEstado.EN_VUELO) {
             currentCoordinates = new Point2D.Double(currentCoordinates.getX() + xIncrement, currentCoordinates.getY() - yDecrement);
 
             if (currentCoordinates.getY() <= targetCoordinates.getY()) {
-                misilEstado = MisilEstado.REACHED_TARGET;
+                misilEstado = MisilEstado.ALCANZO_OBJETIVO;
             }
         }
     }

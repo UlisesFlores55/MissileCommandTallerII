@@ -7,7 +7,7 @@ public class MissileCommand extends JFrame {
 
     public MissileCommand() {
         getContentPane().add(new CampoDeJuego());
-        setSize(400, 350);
+        setSize(525, 480);
         setTitle("Misil Command");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

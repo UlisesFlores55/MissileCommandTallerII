@@ -15,7 +15,7 @@ public class GeneradorArmasEnemigas {
         this.objetivos = objetivos;
     }
 
-    public ICBM createMissile(int speed) {
+    public ICBM crearMisil(int speed) {
         return new ICBM(generateInitialXCoordinate(), selectTarget(), speed);
     }
 

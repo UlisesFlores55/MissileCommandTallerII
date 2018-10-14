@@ -28,7 +28,7 @@ public class ControladorJuegoTest {
     @Test
     public void estadoInicio() {
         ControladorJuego controlador = new ControladorJuego(this.campoDeJuego, this.objetosDefensivos);
-        assertFalse(controlador.isGameInProgress());
+        assertFalse(controlador.isJuegoEnProgreso());
         assertEquals(0, controlador.misils.size());
     }
 
@@ -38,7 +38,7 @@ public class ControladorJuegoTest {
         when(misilBases.get(eq(0))).thenReturn(new MisilBase(new Point2D.Double(60, OBJETO_DEFENSIVO_COOR_Y)));
         assertEquals(0, controlador.misils.size());
 
-        controlador.fireMissile(misilBases.get(0), new Point2D.Double(200,200));
+        controlador.dispararMisil(misilBases.get(0), new Point2D.Double(200,200));
         assertEquals(1, controlador.misils.size());
     }
 

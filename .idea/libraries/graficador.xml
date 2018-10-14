@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="graficador">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/main/java/com/tallerlenguajesii/graficador.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
